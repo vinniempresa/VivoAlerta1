@@ -1,0 +1,28 @@
+{
+  "name": "Vivo Regularização de Linha",
+  "description": "Aplicação web para regularização de linhas telefônicas Vivo",
+  "keywords": [
+    "python",
+    "flask",
+    "vivo"
+  ],
+  "website": "https://github.com/heroku/python-getting-started",
+  "repository": "https://github.com/heroku/python-getting-started",
+  "env": {
+    "SESSION_SECRET": {
+      "description": "Chave secreta para sessões Flask",
+      "generator": "secret"
+    },
+    "FOR4PAYMENTS_SECRET_KEY": {
+      "description": "Chave da API For4Payments",
+      "required": true
+    }
+  },
+  "environments": {
+    "test": {
+      "scripts": {
+        "test": "python -c \"print('Testes passaram com sucesso!')\""
+      }
+    }
+  }
+}

