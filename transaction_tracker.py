@@ -28,6 +28,48 @@ def is_transaction_ip_banned(ip: str) -> bool:
             del IP_BANS[ip]
     return False
 
+def clear_all_banned_ips() -> Dict[str, int]:
+    """
+    Limpa todos os IPs banidos e tentativas de transação
+    Retorna estatísticas da limpeza
+    """
+    global IP_BANS, IP_TRANSACTION_ATTEMPTS
+    
+    banned_count = len(IP_BANS)
+    attempts_count = len(IP_TRANSACTION_ATTEMPTS)
+    
+    IP_BANS.clear()
+    IP_TRANSACTION_ATTEMPTS.clear()
+    
+    return {
+        'banned_ips_cleared': banned_count,
+        'attempt_records_cleared': attempts_count
+    }
+
+def get_banned_ips_info() -> Dict[str, Any]:
+    """
+    Retorna informações sobre IPs banidos e tentativas
+    """
+    now = time.time()
+    active_bans = []
+    expired_bans = []
+    
+    for ip, ban_time in IP_BANS.items():
+        if ban_time > now:
+            active_bans.append({
+                'ip': ip,
+                'expires_in_seconds': int(ban_time - now)
+            })
+        else:
+            expired_bans.append(ip)
+    
+    return {
+        'active_bans': active_bans,
+        'expired_bans': expired_bans,
+        'total_attempt_records': len(IP_TRANSACTION_ATTEMPTS),
+        'attempt_records': {ip: data['attempts'] for ip, data in IP_TRANSACTION_ATTEMPTS.items()}
+    }
+
 def track_transaction_attempt(ip: str, data: Dict[str, Any], transaction_id: str = None) -> Tuple[bool, str]:
     """
     Rastreia tentativas de transação por IP para evitar abuso

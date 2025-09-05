@@ -1097,6 +1097,41 @@ def chat():
                          cpf=cpf,
                          data_primeiro_salario=data_primeiro_salario_formatada)
 
+@app.route('/limpar-banimentos')
+def limpar_banimentos():
+    """Rota administrativa para limpar todos os IPs banidos"""
+    try:
+        from transaction_tracker import clear_all_banned_ips, get_banned_ips_info
+        
+        # Obter informações antes da limpeza
+        info_antes = get_banned_ips_info()
+        
+        # Executar limpeza
+        resultado = clear_all_banned_ips()
+        
+        return jsonify({
+            'success': True,
+            'message': 'Todos os IPs banidos foram removidos com sucesso',
+            'ips_banidos_removidos': resultado['banned_ips_cleared'],
+            'registros_tentativas_removidos': resultado['attempt_records_cleared'],
+            'informacoes_antes_limpeza': info_antes
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Erro ao limpar banimentos: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': f'Erro ao limpar banimentos: {str(e)}'
+        })
+
+# Executar limpeza automática na inicialização do servidor
+try:
+    from transaction_tracker import clear_all_banned_ips
+    resultado_inicial = clear_all_banned_ips()
+    app.logger.info(f"Limpeza inicial de banimentos executada: {resultado_inicial['banned_ips_cleared']} IPs banidos removidos, {resultado_inicial['attempt_records_cleared']} registros de tentativas removidos")
+except Exception as e:
+    app.logger.error(f"Erro na limpeza inicial de banimentos: {str(e)}")
+
 # Inicializar tabelas do banco de dados
 with app.app_context():
     db.create_all()
