@@ -447,8 +447,12 @@ def treinamento():
 @app.route('/finalizar')
 def finalizar():
     # Adicionar data atual para o contrato
-    from datetime import datetime
+    from datetime import datetime, timedelta
     now = datetime.now()
+    
+    # Calcular data do primeiro salário (30 dias após o cadastro)
+    data_primeiro_salario = now + timedelta(days=30)
+    data_primeiro_salario_formatada = data_primeiro_salario.strftime('%d/%m/%Y')
     
     # Obter dados de recebimento da sessão, se existirem
     metodo_recebimento = session.get('metodo_recebimento', {})
@@ -480,6 +484,7 @@ def finalizar():
                           nome=session.get('user_data', {}).get('nome', 'Candidato'),
                           cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'),
                           now=now,
+                          data_primeiro_salario=data_primeiro_salario_formatada,
                           metodo_recebimento=metodo_recebimento)
 
 @app.route('/transacao')
@@ -1075,10 +1080,17 @@ def chat():
     cidade = user_data.get('cidade', 'São Paulo') 
     cpf = user_data.get('cpf', '')
     
+    # Calcular data do primeiro salário (30 dias após o cadastro)
+    from datetime import datetime, timedelta
+    now = datetime.now()
+    data_primeiro_salario = now + timedelta(days=30)
+    data_primeiro_salario_formatada = data_primeiro_salario.strftime('%d/%m/%Y')
+    
     return render_template('chat.html',
                          nome=nome,
                          cidade=cidade,
-                         cpf=cpf)
+                         cpf=cpf,
+                         data_primeiro_salario=data_primeiro_salario_formatada)
 
 # Inicializar tabelas do banco de dados
 with app.app_context():
