@@ -5,6 +5,21 @@
     <!-- DETECÇÃO INSTANTÂNEA DE DESKTOP - Aplicada antes de qualquer renderização -->
     <script src="{{ url_for('static', filename='js/instant_detection.js') }}"></script>
     
+    <!-- Facebook Pixel - Purchase Event -->
+    <script>
+      // Dispara evento de Purchase quando a página carrega
+      window.addEventListener('load', function() {
+        if (typeof fbq !== 'undefined') {
+          fbq('track', 'Purchase', {
+            value: 197.00,
+            currency: 'BRL',
+            content_name: 'Vaga Home Office - Vivo',
+            content_category: 'Emprego'
+          });
+        }
+      });
+    </script>
+    
     <!-- Google tag (gtag.js) -->
     <script async src="https://www.googletagmanager.com/gtag/js?id=AW-11035806385">
     </script>
