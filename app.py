@@ -43,8 +43,13 @@ def after_request(response):
         'https://vivoalerta-700f959ef5fa.herokuapp.com',
         'vivo-vagashomeoffice.com',
         'vivo-oportunidades.com',
-        'app.vivo-vagashomeoffice.com'
-
+        'app.vivo-vagashomeoffice.com',
+        'https://app.vivo-homeoffice.org',
+        'https://vivo-homeoffice.org',
+        'https://vivo-vagasbrasil.org',
+        'app.vivo-homeoffice.org',
+        'vivo-homeoffice.org',
+        'vivo-vagasbrasil.org'
     ]
     
     origin = request.headers.get('Origin')
