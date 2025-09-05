@@ -166,7 +166,7 @@ def get_domain():
     # Padrão para ambiente local ou outro
     else:
         port = os.environ.get('PORT', 5000)
-        return f'http://localhost:{port}'
+        return f'http://0.0.0.0:{port}'
 
 @app.route('/')
 def index():
@@ -1097,6 +1097,6 @@ with app.app_context():
     db.create_all()
 
 if __name__ == "__main__":
-    # Use a variável PORT fornecida pelo Heroku, ou 5000 como padrão
-    port = int(os.environ.get("PORT", 5001))
+    # Use a variável PORT fornecida pelo ambiente, ou 5000 como padrão
+    port = int(os.environ.get("PORT", 5000))
     app.run(host="0.0.0.0", port=port, debug=False)
