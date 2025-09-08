@@ -855,7 +855,7 @@ async function sendSequence(responses) {
         if (response.showTimer) {
             setTimeout(() => {
                 const currentParams = new URLSearchParams(window.location.search);
-                const paymentUrl = `/pagamento${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
                 const timerHtml = `
                     <div class="timer-container mx-auto highlight-pulse" style="max-width: 600px; margin: 20px 0;">
                         <div class="timer" id="timer">10:00</div>
@@ -893,7 +893,7 @@ async function sendSequence(responses) {
         if (response.showPaymentButton) {
             setTimeout(() => {
                 const currentParams = new URLSearchParams(window.location.search);
-                const paymentUrl = `/pagamento${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
                 const buttonHtml = `
                     <div class="text-center" style="margin: 20px 0;">
                         <a href="${paymentUrl}" class="inline-block px-6 py-3 bg-green-600 text-white font-semibold rounded-lg hover:bg-green-700 transition-colors duration-200" style="text-decoration: none; background-color: #16a34a;">
@@ -939,7 +939,7 @@ async function processMessageSequence(sequence) {
         if (msg.showTimer) {
             setTimeout(() => {
                 const currentParams = new URLSearchParams(window.location.search);
-                const paymentUrl = `/pagamento${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
+                const paymentUrl = `/carregando_transacao${currentParams.toString() ? '?' + currentParams.toString() : ''}`;
                 const timerHtml = `
                     <div class="timer-container mx-auto highlight-pulse" style="max-width: 600px; margin: 20px 0;">
                         <div class="timer" id="timer">10:00</div>
