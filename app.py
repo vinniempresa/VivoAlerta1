@@ -235,15 +235,59 @@ def check_device():
 def cadastro():
     # Acesso livre - verificação de autorização removida
     return render_template('cadastro.html')
+
+@app.route('/salvar_dados_cpf', methods=['POST'])
+def salvar_dados_cpf():
+    """Salva os dados reais obtidos da consulta CPF na sessão"""
+    try:
+        data = request.get_json()
+        
+        # Dados obtidos da consulta CPF
+        nome = data.get('nome', '')
+        cpf = data.get('cpf', '')
+        telefone = data.get('telefone', '')
+        
+        # Validar que todos os dados essenciais foram fornecidos
+        if not nome or not cpf:
+            return jsonify({
+                'success': False,
+                'message': 'Dados incompletos da consulta CPF'
+            }), 400
+        
+        # Salvar dados reais na sessão
+        session['user_data'] = {
+            'nome': nome,
+            'cpf': cpf,
+            'telefone': telefone,
+            'source': 'cpf_api'  # Indicar que veio da API real
+        }
+        
+        app.logger.info(f"Dados reais salvos na sessão para {nome} - CPF: {cpf}")
+        
+        return jsonify({
+            'success': True,
+            'message': 'Dados salvos com sucesso'
+        })
+        
+    except Exception as e:
+        app.logger.error(f"Erro ao salvar dados CPF: {str(e)}")
+        return jsonify({
+            'success': False,
+            'message': 'Erro ao processar dados'
+        }), 500
     
 @app.route('/teste-aptidao', methods=['GET', 'POST'])
 def teste_aptidao():
     # Acesso livre - verificação de autorização removida
     # Se for POST, pegamos as informações do formulário anterior
     if request.method == 'POST':
-        nome = request.form.get('nome', 'Candidato')
-        cpf = request.form.get('cpf', '123.456.789-10')
-        telefone = request.form.get('telefone', '(11) 98765-4321')
+        nome = request.form.get('nome', '')
+        cpf = request.form.get('cpf', '')
+        telefone = request.form.get('telefone', '')
+        
+        # Validar que todos os dados foram fornecidos
+        if not nome or not cpf or not telefone:
+            return redirect(url_for('cadastro'))
         # Salvar na sessão para uso posterior
         session['user_data'] = {
             'nome': nome,
@@ -251,8 +295,8 @@ def teste_aptidao():
             'telefone': telefone
         }
     return render_template('teste_aptidao.html', 
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
-                          cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'))
+                          nome=session.get('user_data', {}).get('nome', ''),
+                          cpf=session.get('user_data', {}).get('cpf', ''))
 
 @app.route('/resultado-teste', methods=['GET', 'POST'])
 @app.route('/resultado_teste', methods=['GET', 'POST'])
@@ -260,9 +304,9 @@ def resultado_teste():
     try:
         # Acesso livre - verificação de autorização removida
         
-        # Dados simplificados para evitar sobrecarga no servidor
-        nome = session.get('user_data', {}).get('nome', 'Candidato')
-        cpf = session.get('user_data', {}).get('cpf', '123.456.789-10')
+        # Usar dados reais da sessão
+        nome = session.get('user_data', {}).get('nome', '')
+        cpf = session.get('user_data', {}).get('cpf', '')
         
         # Importar datetime para usar no template
         from datetime import datetime
@@ -283,8 +327,8 @@ def resultado_teste():
         from datetime import datetime
         now = datetime.now()
         return render_template('resultado_teste.html',
-                             nome='Candidato',
-                             cpf='123.456.789-10',
+                             nome=session.get('user_data', {}).get('nome', ''),
+                             cpf=session.get('user_data', {}).get('cpf', ''),
                              pontuacao='86',
                              tempo='08:24',
                              now=now)
@@ -345,16 +389,16 @@ def recebedor():
         
     # Método GET - exibir formulário
     return render_template('recebedor.html',
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
-                          cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'),
-                          email=session.get('user_data', {}).get('email', 'exemplo@email.com'),
-                          telefone=session.get('user_data', {}).get('telefone', '11999999999'))
+                          nome=session.get('user_data', {}).get('nome', ''),
+                          cpf=session.get('user_data', {}).get('cpf', ''),
+                          email=session.get('user_data', {}).get('email', ''),
+                          telefone=session.get('user_data', {}).get('telefone', ''))
 
 @app.route('/selecao-chip', methods=['GET', 'POST'])
 def selecao_chip():
     return render_template('selecao_chip.html',
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
-                          cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'))
+                          nome=session.get('user_data', {}).get('nome', ''),
+                          cpf=session.get('user_data', {}).get('cpf', ''))
 
 @app.route('/plano_saude', methods=['GET', 'POST'])
 def plano_saude():
@@ -364,19 +408,19 @@ def plano_saude():
         session['numero_escolhido'] = numero_escolhido
         
     return render_template('plano_saude.html',
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
-                          cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'))
+                          nome=session.get('user_data', {}).get('nome', ''),
+                          cpf=session.get('user_data', {}).get('cpf', ''))
 
 @app.route('/equipamentos')
 def equipamentos():
     return render_template('equipamentos.html',
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
-                          cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'))
+                          nome=session.get('user_data', {}).get('nome', ''),
+                          cpf=session.get('user_data', {}).get('cpf', ''))
                           
 @app.route('/endereco')
 def endereco():
     return render_template('endereco.html',
-                          nome=session.get('user_data', {}).get('nome', 'Candidato'),
+                          nome=session.get('user_data', {}).get('nome', ''),
                           cpf=session.get('user_data', {}).get('cpf', '123.456.789-10'))
 
 @app.route('/salvar_endereco', methods=['POST'])
@@ -611,10 +655,15 @@ def pagamento():
     try:
         # Obter dados do usuário da sessão
         user_data = session.get('user_data', {})
-        nome = user_data.get('nome', 'Candidato')
-        cpf = user_data.get('cpf', '123.456.789-10')
-        email = user_data.get('email', 'exemplo@email.com')
-        telefone = user_data.get('telefone', '11999999999')
+        # Usar dados reais da consulta CPF - não permitir valores padrão
+        nome = user_data.get('nome', '')
+        cpf = user_data.get('cpf', '')
+        email = user_data.get('email', '')
+        telefone = user_data.get('telefone', '')
+        
+        # Se não há dados reais, redirecionar para cadastro
+        if not nome or not cpf or not telefone:
+            return redirect(url_for('cadastro'))
         
         # Verificar se já existe uma transação PIX na sessão
         payment_data = session.get('payment_data', {})
@@ -626,7 +675,13 @@ def pagamento():
             # Inicializar a API
             payment_api = create_payment_api()
             
-            # Preparar dados do usuário
+            # Verificar se os dados vieram da API real do CPF
+            user_data = session.get('user_data', {})
+            if user_data.get('source') != 'cpf_api':
+                app.logger.warning("Tentativa de pagamento com dados não verificados pela API CPF")
+                return redirect(url_for('cadastro'))
+            
+            # Preparar dados do usuário com dados reais da consulta CPF
             endereco_data = session.get('endereco_data', {})
             payment_user_data = {
                 'nome': nome,
@@ -636,6 +691,8 @@ def pagamento():
                 'estado': endereco_data.get('estado', 'SP'),
                 'cep': endereco_data.get('cep', '01000-000')
             }
+            
+            app.logger.info(f"Processando pagamento com dados reais da API CPF para {nome}")
             
             # Gerar transação PIX
             payment_result = payment_api.create_vivo_payment(payment_user_data)
@@ -841,7 +898,7 @@ def cancel():
 def carteira_digital():
     # Acesso livre - verificação de autorização removida
     # Obter parâmetros de sessão ou definir valores padrão
-    nome = session.get('user_data', {}).get('nome', 'Candidato')
+    nome = session.get('user_data', {}).get('nome', '')
     cpf = session.get('user_data', {}).get('cpf', '')
     telefone = session.get('user_data', {}).get('telefone', '')
     
@@ -854,7 +911,7 @@ def carteira_digital():
 def carteira_digital_acesso():
     # Acesso livre - verificação de autorização removida
     # Obter parâmetros de sessão ou definir valores padrão
-    nome = session.get('user_data', {}).get('nome', 'Candidato')
+    nome = session.get('user_data', {}).get('nome', '')
     cpf = session.get('user_data', {}).get('cpf', '')
     telefone = session.get('user_data', {}).get('telefone', '')
     
@@ -926,7 +983,7 @@ def vaga():
     session['authorized'] = True
     
     # Obter parâmetros de sessão ou definir valores padrão
-    nome = session.get('user_data', {}).get('nome', 'Candidato')
+    nome = session.get('user_data', {}).get('nome', '')
     cpf = session.get('user_data', {}).get('cpf', '')
     telefone = session.get('user_data', {}).get('telefone', '')
     cidade = session.get('user_data', {}).get('cidade', 'São Paulo')
