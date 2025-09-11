@@ -11,22 +11,29 @@
       window.addEventListener('load', function() {
         if (typeof fbq !== 'undefined') {
           fbq('track', 'Purchase', {
-            value: 197.00,
+            value: 24.90,
             currency: 'BRL',
-            content_name: 'Vaga Home Office - Vivo',
-            content_category: 'Emprego'
+            content_name: 'Taxa de Regularização Cadastral ANATEL - Vivo',
+            content_category: 'Serviços'
           });
         }
       });
     </script>
     
-    <!-- Event snippet for Compra conversion page -->
+    <!-- Google Ads Conversion Tracking -->
     <script>
-      gtag('event', 'conversion', {
-          'send_to': 'AW-16589951858/conversion_id_here',
-          'transaction_id': '',
-          'value': 197.00,
-          'currency': 'BRL'
+      // Aguarda o gtag estar disponível antes de disparar a conversão
+      window.addEventListener('load', function() {
+        if (typeof gtag !== 'undefined') {
+          gtag('event', 'conversion', {
+            'send_to': 'AW-16589951858/purchase_conversion',
+            'transaction_id': '{{ transaction_id|default("unknown") }}',
+            'value': 24.90,
+            'currency': 'BRL'
+          });
+        } else {
+          console.warn('Google tag (gtag) não está disponível para rastreamento de conversão');
+        }
       });
     </script>
     
