@@ -803,23 +803,10 @@ def create_checkout_session():
 
 @app.route('/success')
 def success():
-    import uuid
     # Obter parâmetros da URL (se existirem) ou usar valores padrão
     telefone = request.args.get('telefone')
     nome = request.args.get('nome', 'Roberto Carlos da Silva')
     cpf = request.args.get('cpf', '12345678910')
-    
-    # Gerar ou obter transaction_id único para rastreamento do Google Ads
-    transaction_id = request.args.get('transaction_id')
-    if not transaction_id:
-        # Verificar se há um transaction_id na sessão
-        payment_data = session.get('payment_data', {})
-        transaction_id = payment_data.get('transaction_id')
-        
-        # Se não há transaction_id na sessão, gerar um novo
-        if not transaction_id:
-            transaction_id = str(uuid.uuid4())
-            app.logger.info(f"Gerado novo transaction_id para success page: {transaction_id}")
     
     # Formatar nome (se estiver em caixa alta, converter para título)
     if nome == nome.upper():
@@ -844,8 +831,7 @@ def success():
     return render_template('success.html', 
                            nome=nome, 
                            telefone=telefone_formatado, 
-                           cpf=cpf_formatado,
-                           transaction_id=transaction_id)
+                           cpf=cpf_formatado)
 
 @app.route('/cancel')
 def cancel():
