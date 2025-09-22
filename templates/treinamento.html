@@ -41,27 +41,15 @@
             try {
                 // Verificar se o Pixel do Facebook está disponível
                 if (typeof fbq !== 'undefined') {
-                    // Obter transaction_id da URL ou usar um valor padrão
-                    const urlParams = new URLSearchParams(window.location.search);
-                    const transactionId = urlParams.get('transaction_id') || 'direct_access_' + new Date().getTime();
-                    
-                    // Registrar evento de compra no Facebook Pixel
-                    console.log("Registrando evento de compra na página de sucesso...");
-                    fbq('track', 'Purchase', {
-                        value: 59.90,
-                        currency: 'BRL',
-                        transaction_id: transactionId
-                    });
-                    
-                    console.log("Evento de compra registrado com sucesso na página de sucesso!");
-                    
-                    // Registrar evento mais genérico para maior taxa de conversão
+                    // Registrar apenas evento de CompleteRegistration (não Purchase para evitar duplicação)
+                    console.log("Registrando evento de CompleteRegistration na página de treinamento...");
                     fbq('track', 'CompleteRegistration');
+                    console.log("Evento de CompleteRegistration registrado com sucesso!");
                 } else {
-                    console.error("Facebook Pixel não disponível na página de sucesso");
+                    console.error("Facebook Pixel não disponível na página de treinamento");
                 }
             } catch (e) {
-                console.error("Erro ao registrar evento na página de sucesso:", e);
+                console.error("Erro ao registrar evento na página de treinamento:", e);
             }
         });
     </script>

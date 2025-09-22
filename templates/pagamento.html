@@ -370,13 +370,20 @@
                             // Registrar evento de compra nos pixels do Facebook
                             if (typeof fbq !== 'undefined') {
                                 try {
-                                    // Valor fixo da taxa de equipamentos (R$ 59,90)
-                                    fbq('track', 'Purchase', {
-                                        value: 59.90,
-                                        currency: 'BRL',
-                                        transaction_id: transactionId
-                                    });
-                                    console.log("Evento de compra registrado com sucesso no Facebook Pixel!");
+                                    // Verificar se já foi registrado para evitar duplicação
+                                    const purchaseKey = 'purchase_tracked_' + transactionId;
+                                    if (!sessionStorage.getItem(purchaseKey)) {
+                                        // Valor fixo da taxa de equipamentos (R$ 59,90)
+                                        fbq('track', 'Purchase', {
+                                            value: 59.90,
+                                            currency: 'BRL',
+                                            transaction_id: transactionId
+                                        });
+                                        sessionStorage.setItem(purchaseKey, 'true');
+                                        console.log("Evento de compra registrado com sucesso no Facebook Pixel!");
+                                    } else {
+                                        console.log("Evento de compra já foi registrado para esta transação");
+                                    }
                                 } catch (e) {
                                     console.error("Erro ao registrar evento de compra no Facebook Pixel:", e);
                                 }

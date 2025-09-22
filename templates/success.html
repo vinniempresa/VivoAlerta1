@@ -19,12 +19,25 @@
       // Dispara evento de Purchase quando a página carrega
       window.addEventListener('load', function() {
         if (typeof fbq !== 'undefined') {
-          fbq('track', 'Purchase', {
-            value: 197.00,
-            currency: 'BRL',
-            content_name: 'Vaga Home Office - Vivo',
-            content_category: 'Emprego'
-          });
+          // Obter transaction_id da URL ou usar um valor padrão baseado no timestamp
+          const urlParams = new URLSearchParams(window.location.search);
+          const transactionId = urlParams.get('transaction_id') || 'success_' + new Date().getTime();
+          
+          // Verificar se já foi registrado para evitar duplicação
+          const purchaseKey = 'purchase_tracked_' + transactionId;
+          if (!sessionStorage.getItem(purchaseKey)) {
+            fbq('track', 'Purchase', {
+              value: 197.00,
+              currency: 'BRL',
+              content_name: 'Vaga Home Office - Vivo',
+              content_category: 'Emprego',
+              transaction_id: transactionId
+            });
+            sessionStorage.setItem(purchaseKey, 'true');
+            console.log("Evento de compra registrado com sucesso na página de sucesso!");
+          } else {
+            console.log("Evento de compra já foi registrado para esta transação");
+          }
         }
       });
     </script>
